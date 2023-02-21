@@ -4,8 +4,10 @@
 To launch the website:
 
 ```Shell
-docker compose up
+sudo docker compose up
 ```
+
+Once the website is running, you can connect on it through `localhost:8000`
 
 To apply database migrations (required when changing anything in VotingMatch/core/models.py):
 
