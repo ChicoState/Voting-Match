@@ -48,7 +48,7 @@ class UserOpinion(models.Model):
     position = models.IntegerField()
     weight = models.FloatField()
 
-# class CandidateScore(models.Model):
-#     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-#     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
-#     score = models.FloatField()
+class CandidateScore(models.Model):
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
+    score = models.FloatField()
