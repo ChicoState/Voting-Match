@@ -5,6 +5,12 @@
 # https://docs.djangoproject.com/en/4.1/ref/models/fields/
 
 from django.db import models
+from django.contrib.auth.models import User
+
+# Extending the User model:
+# https://docs.djangoproject.com/en/dev/topics/auth/customizing/#extending-the-existing-user-model
+class Voter(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Candidate(models.Model):
     STATES = [
@@ -24,13 +30,25 @@ class Candidate(models.Model):
     last_name = models.CharField(max_length=50)
     state = models.CharField(max_length=2, choices=STATES)
 
-
 # class Issue(models.Model):
+#     name = models.CharField(max_length=200)
+#     candidate_opinion = models.ManyToManyField(Candidate, through='CandidateOpinion')
+#     user_opinion = models.ManyToManyField(Voter)
 
 # Cross table model reference:
 # https://stackoverflow.com/questions/69687277/how-to-add-custom-field-in-manytomany-through-table-in-django
 # class CandidateOpinion(models.Model):
+#     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+#     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+#     position = models.FloatField()
 
 # class UserOpinion(models.Model):
+#     user = models.ForeignKey(Voter, on_delete=models.CASCADE)
+#     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+#     position = models.IntegerField()
+#     weight = models.FloatField()
 
 # class CandidateScore(models.Model):
+#     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+#     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
+#     score = models.FloatField()
