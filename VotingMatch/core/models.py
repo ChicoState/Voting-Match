@@ -40,13 +40,13 @@ class Issue(models.Model):
 class CandidateOpinion(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
-    position = models.FloatField()
+    position = models.FloatField() # 1.0 is favors, 0.0 is mixed or no opinion, -1.0 is opposes
 
 class UserOpinion(models.Model):
     user = models.ForeignKey(Voter, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
-    position = models.IntegerField()
-    weight = models.FloatField()
+    position = models.IntegerField() # 1.0 is strongly favors, -1.0 is strongly opposes
+    weight = models.FloatField() # 1.0 is most important, 0.0 is not important
 
 class CandidateScore(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
