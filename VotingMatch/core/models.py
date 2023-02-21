@@ -36,7 +36,7 @@ class Issue(models.Model):
     user_opinion = models.ManyToManyField(Voter, through='UserOpinion')
 
 # Cross table model reference:
-# https://stackoverflow.com/questions/69687277/how-to-add-custom-field-in-manytomany-through-table-in-django
+# https://docs.djangoproject.com/en/3.2/topics/db/models/#extra-fields-on-many-to-many-relationships
 class CandidateOpinion(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
