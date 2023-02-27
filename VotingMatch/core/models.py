@@ -33,7 +33,7 @@ class Candidate(models.Model):
 class Issue(models.Model):
     name = models.CharField(max_length=200)
     candidate_opinion = models.ManyToManyField(Candidate, through='CandidateOpinion')
-    user_opinion = models.ManyToManyField(Voter, through='UserOpinion')
+    user_opinion = models.ManyToManyField(Voter, through='VoterOpinion')
 
 # Cross table model reference:
 # https://stackoverflow.com/questions/69687277/how-to-add-custom-field-in-manytomany-through-table-in-django
@@ -42,7 +42,7 @@ class CandidateOpinion(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.FloatField() # 1.0 is favors, 0.0 is mixed or no opinion, -1.0 is opposes
 
-class UserOpinion(models.Model):
+class VoterOpinion(models.Model):
     user = models.ForeignKey(Voter, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.IntegerField() # 1.0 is strongly favors, -1.0 is strongly opposes
