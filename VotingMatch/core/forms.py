@@ -10,4 +10,5 @@
 from django import forms
 
 class VoterIssueForm(forms.Form):
-    abortion_opinion = forms.ChoiceField(label='Abortion', choices=((i,i) for i in range(1,6)))
+    Abortion = forms.ChoiceField(label='Abortion', choices=((i,i) for i in range(1,6)))
+    Abortion_weight = forms.ChoiceField(label='Abortion_weight', choices=((i,i) for i in range(1,6)))

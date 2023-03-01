@@ -12,6 +12,9 @@ from django.contrib.auth.models import User
 class Voter(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.user.username
+
 class Candidate(models.Model):
     STATES = [
         ('AL', 'Alabama'), ('AK', 'Alaska'), ('AZ', 'Arizona'), ('AR', 'Arkansas'), ('CA', 'California'),
@@ -30,10 +33,16 @@ class Candidate(models.Model):
     last_name = models.CharField(max_length=50)
     state = models.CharField(max_length=2, choices=STATES)
 
+    def __str__(self):
+        return self.first_name + self.last_name
+
 class Issue(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     candidate_opinion = models.ManyToManyField(Candidate, through='CandidateOpinion')
     user_opinion = models.ManyToManyField(Voter, through='VoterOpinion')
+
+    def __str__(self):
+        return self.name
 
 # Cross table model reference:
 # https://stackoverflow.com/questions/69687277/how-to-add-custom-field-in-manytomany-through-table-in-django
@@ -42,13 +51,22 @@ class CandidateOpinion(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.FloatField() # 1.0 is favors, 0.0 is mixed or no opinion, -1.0 is opposes
 
+    def __str__(self):
+        return self.candidate.name + ': ' + self.issue.name
+
 class VoterOpinion(models.Model):
-    user = models.ForeignKey(Voter, on_delete=models.CASCADE)
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
-    position = models.IntegerField() # 1.0 is strongly favors, -1.0 is strongly opposes
-    weight = models.FloatField() # 1.0 is most important, 0.0 is not important
+    position = models.FloatField(default=0.0) # 1.0 is strongly favors, -1.0 is strongly opposes
+    weight = models.FloatField(default=0.0) # 1.0 is most important, 0.0 is not important
+
+    def __str__(self):
+        return self.voter.user.username + ': ' + self.issue.name
 
 class CandidateScore(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
     score = models.FloatField()
+
+    def __str__(self):
+        return self.voter.user.username + ': ' + self.candidate.name
