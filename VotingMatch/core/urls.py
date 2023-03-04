@@ -7,4 +7,5 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('form/', views.issue_form, name='form'),
+    path('candidate-form/', views.candidate_form, name='candidate-form'),
 ]
