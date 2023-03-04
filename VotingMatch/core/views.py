@@ -50,7 +50,7 @@ def issue_form(request):
 			
 			return redirect('home')
 
-	return render(request, 'core/form.html', context)
+	return render(request, 'voter-core/form.html', context)
 
 def candidate_form(request):
 	context = {}
