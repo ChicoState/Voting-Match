@@ -52,6 +52,27 @@ def voter_form(request):
 					op.save()
 				
 			# Candidate scoring goes here
+			for candidate in Candidate.objects.all():
+				score = 0
+				for issue in Issue.objects.all():
+					vop = VoterOpinion.objects.get(voter=voter, issue=issue)
+					cop = CandidateOpinion.objects.get(candidate=candidate, issue=issue)
+
+					# Calculate score
+					score += abs(vop.position-cop.position)/vop.weight
+
+					# Update existing db entry, otherwise create it
+					try:
+						CandidateScore.objects.get(candidate=candidate, voter=voter)
+						cscore = CandidateScore.objects.filter(candidate=candidate, voter=voter).update(score=score)
+					except CandidateScore.DoesNotExist:
+						cscore = CandidateScore(
+							candidate=candidate,
+							voter=voter,
+							score=score,
+						)
+						cscore.save()
+
 			
 			return redirect('home')
 
