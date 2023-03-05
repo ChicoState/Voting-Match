@@ -29,12 +29,18 @@ class Candidate(models.Model):
         ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'), ('VA', 'Virginia'),
         ('WA', 'Washington'), ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming')
     ]
+
+    PARTIES = [
+        ('R', 'Republican'), ('D', 'Democrat'), ('I', 'Independent'),
+    ]
+
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     state = models.CharField(max_length=2, choices=STATES)
+    party = models.CharField(max_length=1, choices=PARTIES, default='I')
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return self.first_name + ' ' + self.last_name + ' (' + self.state  + '-' + self.party + ')'
 
 
 class Issue(models.Model):

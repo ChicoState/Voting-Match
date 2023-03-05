@@ -14,7 +14,7 @@ def home(request):
 		'candidates': candidates,
 	}
 
-	return render(request, 'core/home.html')
+	return render(request, 'core/home.html', context)
 
 def voter_form(request):
 	form = VoterForm()
@@ -65,5 +65,5 @@ def candidate_form(request, id):
 		'candidate': candidate,
 		'form': form,
 	}
-	
-	return render(request, 'core/candidate-form.html', {})
+
+	return render(request, 'core/candidate-form.html', context)
