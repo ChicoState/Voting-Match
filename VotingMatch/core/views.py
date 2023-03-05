@@ -23,10 +23,10 @@ def voter_form(request):
 		'form': form,
 	}
 
+	# On form submission
 	if request.method == 'POST':			
 		form = VoterForm(request.POST)
 		if form.is_valid():
-			# Do form stuff
 			voter = Voter.objects.get(id=1)
 
 			def paired(iterable):
@@ -65,5 +65,26 @@ def candidate_form(request, id):
 		'candidate': candidate,
 		'form': form,
 	}
+
+	if request.method == 'POST':			
+		form = CandidateForm(request.POST)
+		if form.is_valid():
+			# Iterate through every form entry
+			for issue in form.cleaned_data:
+				position = float(form.cleaned_data[issue])
+
+				# Update existing db entry, otherwise create it
+				try:
+					CandidateOpinion.objects.get(issue=Issue.objects.get(name=issue), candidate=candidate)
+					op = CandidateOpinion.objects.filter(issue=Issue.objects.get(name=issue), candidate=candidate).update(position=position, weight=weight)
+				except CandidateOpinion.DoesNotExist:
+					op = CandidateOpinion(
+						candidate=candidate,
+						issue=Issue.objects.get(name=issue),
+						position=position,
+					)
+					op.save()
+							
+			return redirect('home')
 
 	return render(request, 'core/candidate-form.html', context)

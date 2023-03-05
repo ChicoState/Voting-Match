@@ -59,7 +59,7 @@ class CandidateOpinion(models.Model):
     position = models.FloatField() # 1.0 is favors, 0.0 is mixed or no opinion, -1.0 is opposes
 
     def __str__(self):
-        return self.candidate.name + ': ' + self.issue.name
+        return str(self.candidate) + ': ' + str(self.issue)
 
 class VoterOpinion(models.Model):
     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
@@ -68,7 +68,7 @@ class VoterOpinion(models.Model):
     weight = models.FloatField(default=0.0) # 1.0 is most important, 0.1 is least important
 
     def __str__(self):
-        return self.voter.user.username + ': ' + self.issue.name
+        return str(self.voter) + ': ' + str(self.issue)
 
 class CandidateScore(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
@@ -76,4 +76,4 @@ class CandidateScore(models.Model):
     score = models.FloatField()
 
     def __str__(self):
-        return self.voter.user.username + ': ' + self.candidate.name
+        return str(self.voter) + ': ' + str(self.candidate)
