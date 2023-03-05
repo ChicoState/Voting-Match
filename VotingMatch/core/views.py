@@ -3,23 +3,28 @@
 
 from django.shortcuts import render, redirect
 
-from .forms import VoterIssueForm
-from .models import Issue, Voter, VoterOpinion, CandidateOpinion, CandidateScore
+from .forms import *
+from .models import *
 
 # Create your views here.
 def home(request):
-	context = {}
+	candidates = Candidate.objects.all()
+	
+	context = {
+		'candidates': candidates,
+	}
+
 	return render(request, 'core/home.html')
 
-def issue_form(request):
-	form = VoterIssueForm()
+def voter_form(request):
+	form = VoterForm()
 
 	context = {
 		'form': form,
 	}
 
 	if request.method == 'POST':			
-		form = VoterIssueForm(request.POST)
+		form = VoterForm(request.POST)
 		if form.is_valid():
 			# Do form stuff
 			voter = Voter.objects.get(id=1)
@@ -52,6 +57,13 @@ def issue_form(request):
 
 	return render(request, 'core/voter-form.html', context)
 
-def candidate_form(request):
-	context = {}
+def candidate_form(request, id):
+	candidate = Candidate.objects.get(id=id)
+	form = CandidateForm()
+
+	context = {
+		'candidate': candidate,
+		'form': form,
+	}
+	
 	return render(request, 'core/candidate-form.html', {})

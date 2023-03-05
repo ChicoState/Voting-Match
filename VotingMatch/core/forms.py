@@ -12,7 +12,7 @@
 
 from django import forms
 
-class VoterIssueForm(forms.Form):
+class VoterForm(forms.Form):
     choices = ((1,1), (2,2), (3,3), (4,4), (5,5))
 
     Abortion = forms.ChoiceField(label='Abortion', choices=choices)
