@@ -14,7 +14,7 @@ from django import forms
 
 class VoterForm(forms.Form):
     choices = [(-1.0, "Strongly Oppose"), (-0.5, "Oppose"), (0.0, "Mixed/No Opinion"), (0.5, "Support"), (1.0, "Strongly Support")]
-    weight_choices = [(0.1, "Very Important"), (0.25, "Somewhat Important"), (0.5, "Neither Important nor Irrelevant"), (0.75, "Somewhat Irrelvant"), (1.0, "Very Irrelevant")]
+    weight_choices = [(0.1, "Very Irrelevant"), (0.25, "Somewhat Irrelevant"), (0.5, "Neither Important nor Irrelevant"), (0.75, "Somewhat Important"), (1.0, "Very Important")]
 
     Abortion = forms.ChoiceField(label='Abortion', choices=choices, initial=0.0)
     Abortion_weight = forms.ChoiceField(label='Abortion weight', choices=weight_choices, initial=0.5)
