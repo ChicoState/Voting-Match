@@ -1,6 +1,6 @@
 {% include 'core/head.html' %}
 
-<!-- <table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered">
 	<thead class=>
 		<tr>
 			<th scope="row"> Candidate </th>
@@ -12,22 +12,26 @@
 	{% for candidate in candidates %}
 		<tr>
 			<td> {{candidate}} </td>
-			{% for opinion in candidateopinions %}
-				{% if opinion.candidate == candidate %}
-					<td> {{opinion.position}} </td>
-				{% endif %}
+			{% for issue in issues %}
+				{% for opinion in candidateopinions %}
+					{% if opinion.candidate == candidate and opinion.issue == issue %}
+						<td> {{opinion.position}} </td>
+					{% endif %}
+				{% endfor %}
 			{% endfor %}
 		</tr>
 	{% endfor %}
 	<thead class="thead-light">
 		<th> You </th>
-		{% for opinion in voteropinions %}
-			{% if opinion.voter == voter %}
-				<td> {{opinion.position}} </td>
-			{% endif %}
+		{% for issue in issues %}
+			{% for opinion in voteropinions %}
+				{% if opinion.voter == voter and opinion.issue == issue %}
+					<td> {{opinion.position}} </td>
+				{% endif %}
+			{% endfor %}
 		{% endfor %}
 	</thead>
-</table> -->
+</table>
 
 <h3> Your top candidates: </h3>
 {% for score in candidatescores|dictsort:"score" %}
