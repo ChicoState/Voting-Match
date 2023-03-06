@@ -97,7 +97,7 @@ def candidate_form(request, id):
 				# Update existing db entry, otherwise create it
 				try:
 					CandidateOpinion.objects.get(issue=Issue.objects.get(name=issue), candidate=candidate)
-					op = CandidateOpinion.objects.filter(issue=Issue.objects.get(name=issue), candidate=candidate).update(position=position)
+					op = CandidateOpinion.objects.filter(issue=Issue.objects.get(name=issue), candidate=candidate).update(position=position, weight=weight)
 				except CandidateOpinion.DoesNotExist:
 					op = CandidateOpinion(
 						candidate=candidate,
