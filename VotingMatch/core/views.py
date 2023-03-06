@@ -61,20 +61,20 @@ def voter_form(request):
 					# Calculate score
 					score += abs(vop.position-cop.position)/vop.weight
 
-					# Update existing db entry, otherwise create it
-					try:
-						CandidateScore.objects.get(candidate=candidate, voter=voter)
-						cscore = CandidateScore.objects.filter(candidate=candidate, voter=voter).update(score=score)
-					except CandidateScore.DoesNotExist:
-						cscore = CandidateScore(
-							candidate=candidate,
-							voter=voter,
-							score=score,
-						)
-						cscore.save()
+				# Update existing db entry, otherwise create it
+				try:
+					CandidateScore.objects.get(candidate=candidate, voter=voter)
+					cscore = CandidateScore.objects.filter(candidate=candidate, voter=voter).update(score=score)
+				except CandidateScore.DoesNotExist:
+					cscore = CandidateScore(
+						candidate=candidate,
+						voter=voter,
+						score=score,
+					)
+					cscore.save()
 
 			
-			return redirect('home')
+			return redirect('/candidate-scores/'+str(voter.id))
 
 	return render(request, 'core/voter-form.html', context)
 
@@ -109,3 +109,22 @@ def candidate_form(request, id):
 			return redirect('home')
 
 	return render(request, 'core/candidate-form.html', context)
+
+def candidate_scores(request, id):
+	voter = Voter.objects.get(id=id)
+	candidates = Candidate.objects.all()
+	issues = Issue.objects.all()
+	candidate_opinions = CandidateOpinion.objects.all()
+	voter_opinions = VoterOpinion.objects.all()
+	candidate_scores = CandidateScore.objects.all()
+
+	context = {
+		'voter': voter,
+		'candidates': candidates,
+		'issues': issues,
+		'candidateopinions': candidate_opinions,
+		'voteropinions': voter_opinions,
+		'candidatescores': candidate_scores,
+	}
+
+	return render(request, 'core/candidate-scores.html', context)
