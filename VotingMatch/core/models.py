@@ -29,12 +29,18 @@ class Candidate(models.Model):
         ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'), ('VA', 'Virginia'),
         ('WA', 'Washington'), ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming')
     ]
+
+    PARTIES = [
+        ('R', 'Republican'), ('D', 'Democrat'), ('I', 'Independent'),
+    ]
+
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     state = models.CharField(max_length=2, choices=STATES)
+    party = models.CharField(max_length=1, choices=PARTIES, default='I')
 
     def __str__(self):
-        return self.first_name + self.last_name
+        return self.first_name + ' ' + self.last_name + ' (' + self.state  + '-' + self.party + ')'
 
 
 class Issue(models.Model):
@@ -53,16 +59,16 @@ class CandidateOpinion(models.Model):
     position = models.FloatField() # 1.0 is favors, 0.0 is mixed or no opinion, -1.0 is opposes
 
     def __str__(self):
-        return self.candidate.name + ': ' + self.issue.name
+        return str(self.candidate) + ': ' + str(self.issue)
 
 class VoterOpinion(models.Model):
     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.FloatField(default=0.0) # 1.0 is strongly favors, -1.0 is strongly opposes
-    weight = models.FloatField(default=0.0) # 1.0 is most important, 0.1 is least important
+    weight = models.FloatField(default=0.0) # 0.1 is most important, 1.0 is least important
 
     def __str__(self):
-        return self.voter.user.username + ': ' + self.issue.name
+        return str(self.voter) + ': ' + str(self.issue)
 
 class CandidateScore(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
@@ -70,4 +76,4 @@ class CandidateScore(models.Model):
     score = models.FloatField()
 
     def __str__(self):
-        return self.voter.user.username + ': ' + self.candidate.name
+        return str(self.voter) + ': ' + str(self.candidate)

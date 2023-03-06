@@ -3,25 +3,30 @@
 
 from django.shortcuts import render, redirect
 
-from .forms import VoterIssueForm
-from .models import Issue, Voter, VoterOpinion, CandidateOpinion, CandidateScore
+from .forms import *
+from .models import *
 
 # Create your views here.
 def home(request):
-	context = {}
-	return render(request, 'core/home.html')
+	candidates = Candidate.objects.all()
+	
+	context = {
+		'candidates': candidates,
+	}
 
-def issue_form(request):
-	form = VoterIssueForm()
+	return render(request, 'core/home.html', context)
+
+def voter_form(request):
+	form = VoterForm()
 
 	context = {
 		'form': form,
 	}
 
+	# On form submission
 	if request.method == 'POST':			
-		form = VoterIssueForm(request.POST)
+		form = VoterForm(request.POST)
 		if form.is_valid():
-			# Do form stuff
 			voter = Voter.objects.get(id=1)
 
 			def paired(iterable):
@@ -47,7 +52,60 @@ def issue_form(request):
 					op.save()
 				
 			# Candidate scoring goes here
+			for candidate in Candidate.objects.all():
+				score = 0
+				for issue in Issue.objects.all():
+					vop = VoterOpinion.objects.get(voter=voter, issue=issue)
+					cop = CandidateOpinion.objects.get(candidate=candidate, issue=issue)
+
+					# Calculate score
+					score += abs(vop.position-cop.position)/vop.weight
+
+					# Update existing db entry, otherwise create it
+					try:
+						CandidateScore.objects.get(candidate=candidate, voter=voter)
+						cscore = CandidateScore.objects.filter(candidate=candidate, voter=voter).update(score=score)
+					except CandidateScore.DoesNotExist:
+						cscore = CandidateScore(
+							candidate=candidate,
+							voter=voter,
+							score=score,
+						)
+						cscore.save()
+
 			
 			return redirect('home')
 
-	return render(request, 'core/form.html', context)
+	return render(request, 'core/voter-form.html', context)
+
+def candidate_form(request, id):
+	candidate = Candidate.objects.get(id=id)
+	form = CandidateForm()
+
+	context = {
+		'candidate': candidate,
+		'form': form,
+	}
+
+	if request.method == 'POST':			
+		form = CandidateForm(request.POST)
+		if form.is_valid():
+			# Iterate through every form entry
+			for issue in form.cleaned_data:
+				position = float(form.cleaned_data[issue])
+
+				# Update existing db entry, otherwise create it
+				try:
+					CandidateOpinion.objects.get(issue=Issue.objects.get(name=issue), candidate=candidate)
+					op = CandidateOpinion.objects.filter(issue=Issue.objects.get(name=issue), candidate=candidate).update(position=position)
+				except CandidateOpinion.DoesNotExist:
+					op = CandidateOpinion(
+						candidate=candidate,
+						issue=Issue.objects.get(name=issue),
+						position=position,
+					)
+					op.save()
+							
+			return redirect('home')
+
+	return render(request, 'core/candidate-form.html', context)
