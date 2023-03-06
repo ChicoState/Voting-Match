@@ -65,7 +65,7 @@ class VoterOpinion(models.Model):
     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.FloatField(default=0.0) # 1.0 is strongly favors, -1.0 is strongly opposes
-    weight = models.FloatField(default=0.0) # 0.1 is most important, 1.0 is least important
+    weight = models.FloatField(default=0.0) # 1.0 is most important, 0.1 is least important
 
     def __str__(self):
         return str(self.voter) + ': ' + str(self.issue)
