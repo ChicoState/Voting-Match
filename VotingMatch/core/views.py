@@ -59,7 +59,7 @@ def voter_form(request):
 					cop = CandidateOpinion.objects.get(candidate=candidate, issue=issue)
 
 					# Calculate score
-					score += abs(vop.position-cop.position)/vop.weight
+					score += abs(vop.position-cop.position)*vop.weight
 
 				# Update existing db entry, otherwise create it
 				try:
