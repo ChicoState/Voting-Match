@@ -1,7 +1,7 @@
 {% include 'core/head.html' %}
 
 <table class="table table-striped table-bordered">
-	<thead class=>
+	<thead>
 		<tr>
 			<th scope="row"> Candidate </th>
 			{% for issue in issues %}
@@ -21,7 +21,7 @@
 			{% endfor %}
 		</tr>
 	{% endfor %}
-	<thead class="thead-light">
+	<thead>
 		<th> You </th>
 		{% for issue in issues %}
 			{% for opinion in voteropinions %}

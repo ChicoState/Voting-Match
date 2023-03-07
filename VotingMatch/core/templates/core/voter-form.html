@@ -1,13 +1,18 @@
 {% include 'core/head.html' %}
 
-<form method="post">
-    {% csrf_token %}
+<!-- Draggable: -->
+<!-- https://www.npmjs.com/package/react-draggable -->
+
+<div class="row justify-content-md-center">
     <div class="col-5">
-    {% for field in form %}
-        <div class="row">
-            {{field.label_tag}} {{field}}
-        </div>
-    {% endfor %}
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="row">
+                    {{field.label_tag}} {{field}}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Submit">
+        </form>
     </div>
-    <input type="submit" value="Submit">
-</form>
+</div>
