@@ -3,8 +3,9 @@
 
 from django.urls import path
 
-
+from frontend import views
 
 urlpatterns = [
-	path('/', )
+	path('', views.DashboardRedirect.as_view()),
+	path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 ]
