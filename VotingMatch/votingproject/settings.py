@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # Apps
     'core', 
+    'frontend',
 
     # 3rd Party Apps
     'django_extensions',
