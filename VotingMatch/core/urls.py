@@ -2,7 +2,8 @@
 # https://docs.djangoproject.com/en/4.1/topics/http/urls/
 
 from django.urls import path
-from . import views
+
+from core import views
 
 urlpatterns = [
     path('', views.home, name='home'),

@@ -5,15 +5,15 @@
 # https://docs.djangoproject.com/en/4.1/ref/models/fields/
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 # Extending the User model:
 # https://docs.djangoproject.com/en/dev/topics/auth/customizing/#extending-the-existing-user-model
-class Voter(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Voter(AbstractUser):
+    pass 
 
-    def __str__(self):
-        return self.user.username
+    # def __str__(self):
+    #     return self.username
 
 class Candidate(models.Model):
     STATES = [
@@ -45,8 +45,8 @@ class Candidate(models.Model):
 
 class Issue(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    candidate_opinion = models.ManyToManyField(Candidate, through='CandidateOpinion')
-    user_opinion = models.ManyToManyField(Voter, through='VoterOpinion')
+    candidate_opinion = models.ManyToManyField(Candidate, through='CandidateOpinion', related_name='issues')
+    issue_voter_opinion = models.ManyToManyField(Voter, through='VoterOpinion', related_name='issues')
 
     def __str__(self):
         return self.name.replace('_', ' ')
@@ -62,7 +62,7 @@ class CandidateOpinion(models.Model):
         return str(self.candidate) + ': ' + str(self.issue)
 
 class VoterOpinion(models.Model):
-    voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
+    voter_opinion = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='opinions')
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.FloatField(default=0.0) # 1.0 is strongly favors, -1.0 is strongly opposes
     weight = models.FloatField(default=0.0) # 1.0 is most important, 0.1 is least important
@@ -72,7 +72,7 @@ class VoterOpinion(models.Model):
 
 class CandidateScore(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
+    voter_score = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='scores')
     score = models.FloatField()
 
     def __str__(self):
