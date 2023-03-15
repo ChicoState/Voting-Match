@@ -1,0 +1,21 @@
+/* General purpose styles */
+.top-20 {
+	margin-top: 20px;
+}
+
+/* Dashboard stuff */
+.dashboard-left {
+	border-right: 1px solid rgba(86,61,124,.2);
+}
+
+.dashboard-issue-container {
+	margin-bottom: 15px;
+}
+
+.dashboard-candidate-container {
+	margin-bottom: 15px;
+}
+
+.dashboard-news-container {
+	margin-bottom: 15px;
+}
