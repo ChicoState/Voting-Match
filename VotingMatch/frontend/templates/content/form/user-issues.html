@@ -1,0 +1,24 @@
+<div class="col-6 text-center border-right" id="form-user-issues">
+	<h3> My Issues </h3>
+	{% if selected %}
+		<form class="sortable list-group col-12">
+			{% csrf_token %}
+			{% for issue in selected %}
+				<div>
+					<li class="list-group-item d-flex justify-content-between">
+						{{issue}}
+						<span class="badge bg-danger"
+							style="cursor: pointer;"
+							hx-delete="{% url 'form-remove-user-issue' issue.pk %}"
+							hx-target="#user-form">X</span>
+					</li>
+				</div>
+			{% endfor %}
+	{% else %}
+		<p> No issues selected. </p>
+	{% endif %}
+</div>
+
+<div class="col-6 text-center" id="form-issues">
+	{% include 'content/form/issues-list.html' %}
+</div>

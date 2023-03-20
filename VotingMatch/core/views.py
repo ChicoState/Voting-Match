@@ -3,10 +3,15 @@
 
 from django.shortcuts import render, redirect
 
-from .forms import *
-from .models import *
+# Decorators
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 
-# Create your views here.
+# Models and Forms
+from core.forms import *
+from core.models import *
+
+# Old views, will be removed soon.
 def home(request):
 	candidates = Candidate.objects.all()
 	
@@ -128,3 +133,36 @@ def candidate_scores(request, id):
 	}
 
 	return render(request, 'core/candidate-scores.html', context)
+
+@login_required
+def form_add_user_issue(request, id):
+	voter = request.user
+	issue = Issue.objects.get(pk=id)
+	op = VoterOpinion(voter=voter, issue=issue, position=0.0, weight=0.0)
+	op.save()
+
+	selected = voter.issues.all()
+	issues = Issue.objects.all().exclude(name__in=selected.values_list('name', flat=True))
+
+	context = {
+		'selected': selected,
+		'issues': issues,
+	}
+	return render(request, 'content/form/user-issues.html', context)
+
+@login_required
+@require_http_methods(['DELETE'])
+def form_remove_user_issue(request, id):
+	voter = request.user
+	issue = Issue.objects.get(pk=id)
+	op = VoterOpinion.objects.get(voter=voter, issue=issue)
+	op.delete()
+
+	selected = voter.issues.all()
+	issues = Issue.objects.all().exclude(name__in=selected.values_list('name', flat=True))
+
+	context = {
+		'selected': selected,
+		'issues': issues,
+	}
+	return render(request, 'content/form/user-issues.html', context)

@@ -62,7 +62,7 @@ class CandidateOpinion(models.Model):
         return str(self.candidate) + ': ' + str(self.issue)
 
 class VoterOpinion(models.Model):
-    voter_opinion = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='opinions')
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='opinions')
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.FloatField(default=0.0) # 1.0 is strongly favors, -1.0 is strongly opposes
     weight = models.FloatField(default=0.0) # 1.0 is most important, 0.1 is least important

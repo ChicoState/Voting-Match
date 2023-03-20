@@ -8,6 +8,8 @@ from frontend import views
 urlpatterns = [
 	path('', views.DashboardRedirect.as_view()),
 	path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+	path('candidates/', views.CandidatesView.as_view(), name='candidates'),
+	path('form/', views.VoterFormView.as_view(), name='form'),
 
 	# Login/Logout/Register
 	path('login/', views.Login.as_view(), name='login'),

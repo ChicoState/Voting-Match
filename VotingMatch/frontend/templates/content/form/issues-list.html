@@ -1,0 +1,10 @@
+<h3> Issues </h3>
+{% csrf_token %}
+<div class="row justify-content-center form-issue-search">
+	<input type="text" class="from-control" name="search" placeholder="Search issue..."/>
+</div>
+<br>
+<div class="row justify-content-center" id="form-issue-results">
+	{% include 'content/form/issue-search-results.html' %}
+</div>
+<br>
