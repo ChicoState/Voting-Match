@@ -1,10 +1,11 @@
 <div class="col-6 text-center border-right" id="form-user-issues">
 	<h3> My Issues </h3>
 	{% if selected %}
-		<form class="sortable list-group col-12">
-			{% csrf_token %}
+		{% csrf_token %}
+		<form class="sortable list-group col-12" hx-trigger="end" hx-post="sort/" hx-target="#user-form">
 			{% for issue in selected %}
 				<div>
+					<input type="hidden" name="user-issue-order" value="{{issue.pk}}"/>
 					<li class="list-group-item d-flex justify-content-between">
 						{{issue}}
 						<span class="badge bg-danger"
@@ -14,6 +15,7 @@
 					</li>
 				</div>
 			{% endfor %}
+			<div class="htmx-indicator">Updating...</div>
 	{% else %}
 		<p> No issues selected. </p>
 	{% endif %}

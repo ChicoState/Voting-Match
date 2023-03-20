@@ -13,6 +13,9 @@
 		<!-- HTMX v1.8.6 -->
 		<script src="https://unpkg.com/htmx.org@1.8.6" integrity="sha384-Bj8qm/6B+71E6FQSySofJOUjA/gq330vEqjFx9LakWybUySyI1IQHwPtbTU7bNwx" crossorigin="anonymous"></script>
 	
+		<!-- SortableJS v1.15.0 -->
+		<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+	
 		<!-- Custom CSS -->
 		<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 	</head>
@@ -28,6 +31,17 @@
 		<script>
 			document.body.addEventListener('htmx:configRequest', (event) => {
 				event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+			})
+
+			htmx.onLoad(function(content) {
+				var sortables = content.querySelectorAll(".sortable");
+				for (var i = 0; i < sortables.length; i++) {
+					var sortable = sortables[i];
+					new Sortable(sortable, {
+						animation: 150,
+						ghostClass: 'blue-background-class'
+					});
+				}
 			})
 		</script>
 	</body>
