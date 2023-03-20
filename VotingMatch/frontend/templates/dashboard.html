@@ -3,13 +3,18 @@
 {% block content %}
 
 <div class="row">
-	<div class="col-8 align-content-center dashboard-left">
-		{% include 'content/dashboard/issues.html' %}
-		<br>
+	<div class="col-8 align-content-center border-right">
+		<section>
+			{% include 'content/dashboard/issues.html' %}
+		</section>
+		<section>
 		{% include 'content/dashboard/news.html' %}
+		</section>
 	</div>
 	<div class="col-4 align-content-center">
+		<section>
 		{% include 'content/dashboard/candidates.html' %}
+		</section>
 	</div>
 </div>
 
