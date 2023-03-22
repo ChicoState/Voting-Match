@@ -166,3 +166,16 @@ def form_remove_user_issue(request, id):
 		'issues': issues,
 	}
 	return render(request, 'content/form/user-issues.html', context)
+
+@login_required
+def form_issue_search(request):
+	search_text = request.POST.get('form-issue-search')
+	print(search_text)
+
+	user_issues = request.user.issues.all()
+	results = Issue.objects.filter(name__istartswith=search_text).exclude(name__in=user_issues.values_list('name', flat=True))
+	
+	context = {
+		'issues': results,
+	}
+	return render(request, 'content/form/issue-search-results.html', context)
