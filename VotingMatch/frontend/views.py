@@ -51,8 +51,8 @@ class CandidatesView(ListView):
 	def get_queryset(self):
 		return super().get_queryset()
 
-class VoterFormView(View):
-	template_name = 'form.html'
+class IssueFormViewPt1(View):
+	template_name = 'issue-form-pt1.html'
 
 	def get(self, request, *args, **kwargs):
 		voter = self.request.user

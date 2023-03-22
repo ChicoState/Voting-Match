@@ -9,7 +9,7 @@ urlpatterns = [
 	path('', views.DashboardRedirect.as_view()),
 	path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 	path('candidates/', views.CandidatesView.as_view(), name='candidates'),
-	path('form/', views.VoterFormView.as_view(), name='form'),
+	path('issue-form/pt-1', views.IssueFormViewPt1.as_view(), name='issue-form-pt1'),
 
 	# Login/Logout/Register
 	path('login/', views.Login.as_view(), name='login'),

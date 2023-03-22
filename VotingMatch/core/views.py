@@ -173,7 +173,7 @@ def form_issue_search(request):
 	print(search_text)
 
 	user_issues = request.user.issues.all()
-	results = Issue.objects.filter(name__istartswith=search_text).exclude(name__in=user_issues.values_list('name', flat=True))
+	results = Issue.objects.filter(name__icontains=search_text).exclude(name__in=user_issues.values_list('name', flat=True))
 	
 	context = {
 		'issues': results,
