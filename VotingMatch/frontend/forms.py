@@ -11,9 +11,9 @@ from core.models import Voter, VoterOpinion
 class RegisterForm(UserCreationForm):
     class Meta:
         model = Voter
-        fields = ["username", "password1", "password2"]
+        fields = ['username', 'password1', 'password2']
 
-# class IssueForm(forms.ModelForm):
-#     class Meta:
-#         model = VoterOpinion
-#         fields = ["weight"]
+class IssueForm(forms.ModelForm):
+    class Meta:
+        model = VoterOpinion
+        fields = ['position']

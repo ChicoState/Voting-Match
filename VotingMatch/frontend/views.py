@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import RegisterForm
+from frontend.forms import RegisterForm, IssueForm
 from core.models import Candidate, Voter, Issue
 
 class DashboardView(LoginRequiredMixin, View):
@@ -51,15 +51,30 @@ class CandidatesView(ListView):
 	def get_queryset(self):
 		return super().get_queryset()
 
-class IssueFormViewPt1(View):
+class IssueFormViewPt1(LoginRequiredMixin, View):
+	login_url = reverse_lazy('login')
 	template_name = 'issue-form-pt1.html'
 
 	def get(self, request, *args, **kwargs):
 		voter = self.request.user
 		selected = voter.issues.all()
 		issues = Issue.objects.all().exclude(name__in=selected.values_list('name', flat=True))
+		
 		context = {
 			'selected': selected,
 			'issues': issues,
+		}
+		return render(request, self.template_name, context)
+
+class IssueFormViewPt2(LoginRequiredMixin, View):
+	login_url = reverse_lazy('login')
+	template_name = 'issue-form-pt2.html'
+
+	def get(self, request, *args, **kwargs):
+		voter = self.request.user
+		selected = voter.opinions.all()
+
+		context = {
+			'selected': selected,
 		}
 		return render(request, self.template_name, context)

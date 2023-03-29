@@ -15,4 +15,5 @@ urlpatterns = [
     path('form/add-user-issue/<int:id>', views.form_add_user_issue, name='form-add-user-issue'),
     path('form/remove-user-issue/<int:id>', views.form_remove_user_issue, name='form-remove-user-issue'),
     path('form/issue-search/', views.form_issue_search, name='form-issue-search'),
+    path('form/save-user-issue/<int:id>', views.form_save_user_issue, name='form-save-user-issue')
 ]

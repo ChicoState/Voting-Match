@@ -1,6 +1,7 @@
 # Documentation about QuerySet API:
 # https://docs.djangoproject.com/en/4.1/ref/models/querysets/
 
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 
 # Decorators
@@ -179,3 +180,11 @@ def form_issue_search(request):
 		'issues': results,
 	}
 	return render(request, 'content/form/issue-search-results.html', context)
+
+@login_required
+def form_save_user_issue(request, id):
+	voter_opinion = VoterOpinion.objects.get(pk=id)
+	voter_opinion.position = request.POST.get(str(id))
+	voter_opinion.save()
+	
+	return HttpResponse('')

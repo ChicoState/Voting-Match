@@ -3,7 +3,7 @@
 	{% if selected %}
 		{% csrf_token %}
 		<form class="sortable list-group col-12" hx-trigger="end" hx-post="sort/" hx-target="#user-form">
-			{% for issue in selected %}
+			{% for issue in selected|dictsort:"name" %}
 				<div>
 					<input type="hidden" name="user-issue-order" value="{{issue.pk}}"/>
 					<li class="list-group-item d-flex justify-content-between">
