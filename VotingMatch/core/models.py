@@ -27,7 +27,7 @@ class Candidate(models.Model):
         ('NC', 'North Carolina'), ('ND', 'North Dakota'), ('OH', 'Ohio'), ('OK', 'Oklahoma'), ('OR', 'Oregon'),
         ('PA', 'Pennsylvania'), ('RI', 'Rhode Island'), ('SC', 'South Carolina'), ('SD', 'South Dakota'),
         ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'), ('VA', 'Virginia'),
-        ('WA', 'Washington'), ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming')
+        ('WA', 'Washington'), ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming'), ('N/A', 'Not Applicable')
     ]
 
     PARTIES = [
@@ -36,8 +36,9 @@ class Candidate(models.Model):
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    state = models.CharField(max_length=2, choices=STATES)
+    state = models.CharField(max_length=3, choices=STATES, default='N/A')
     party = models.CharField(max_length=1, choices=PARTIES, default='I')
+    candidate_image = models.ImageField(upload_to='candidate_images/')
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' (' + self.state  + '-' + self.party + ')'
@@ -49,7 +50,7 @@ class Issue(models.Model):
     issue_voter_opinion = models.ManyToManyField(Voter, through='VoterOpinion', related_name='issues')
 
     def __str__(self):
-        return self.name.replace('_', ' ')
+        return self.name
 
 # Cross table model reference:
 # https://stackoverflow.com/questions/69687277/how-to-add-custom-field-in-manytomany-through-table-in-django
