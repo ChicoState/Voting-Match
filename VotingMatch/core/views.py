@@ -142,8 +142,8 @@ def form_add_user_issue(request, id):
 	op = VoterOpinion(voter=voter, issue=issue, position=0.0, weight=0.0)
 	op.save()
 
-	selected = voter.issues.all()
-	issues = Issue.objects.all().exclude(name__in=selected.values_list('name', flat=True))
+	selected = voter.opinions.all()
+	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
 
 	context = {
 		'selected': selected,
@@ -171,8 +171,6 @@ def form_remove_user_issue(request, id):
 @login_required
 def form_issue_search(request):
 	search_text = request.POST.get('form-issue-search')
-	print(search_text)
-
 	user_issues = request.user.issues.all()
 	results = Issue.objects.filter(name__icontains=search_text).exclude(name__in=user_issues.values_list('name', flat=True))
 	
@@ -183,8 +181,11 @@ def form_issue_search(request):
 
 @login_required
 def form_save_user_issue(request, id):
-	voter_opinion = VoterOpinion.objects.get(pk=id)
-	voter_opinion.position = request.POST.get(str(id))
-	voter_opinion.save()
+	try:
+		voter_opinion = VoterOpinion.objects.get(pk=id)
+		voter_opinion.position = request.POST.get(str(id))
+		voter_opinion.save()
+	except VoterOpinion.DoesNotExist:
+		pass
 	
 	return HttpResponse('')

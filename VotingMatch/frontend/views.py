@@ -57,8 +57,8 @@ class IssueFormViewPt1(LoginRequiredMixin, View):
 
 	def get(self, request, *args, **kwargs):
 		voter = self.request.user
-		selected = voter.issues.all()
-		issues = Issue.objects.all().exclude(name__in=selected.values_list('name', flat=True))
+		selected = voter.opinions.all()
+		issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
 		
 		context = {
 			'selected': selected,

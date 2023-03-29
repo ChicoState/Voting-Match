@@ -3,14 +3,14 @@
 	{% if selected %}
 		{% csrf_token %}
 		<form class="sortable list-group col-12" hx-trigger="end" hx-post="sort/" hx-target="#user-form">
-			{% for issue in selected|dictsort:"name" %}
+			{% for opinion in selected|dictsort:"weight" %}
 				<div>
-					<input type="hidden" name="user-issue-order" value="{{issue.pk}}"/>
+					<input type="hidden" name="user-issue-order" value="{{opinion.issue.pk}}"/>
 					<li class="list-group-item d-flex justify-content-between">
-						{{issue}}
+						{{opinion.issue}}
 						<span class="badge bg-danger"
 							style="cursor: pointer;"
-							hx-delete="{% url 'form-remove-user-issue' issue.pk %}"
+							hx-delete="{% url 'form-remove-user-issue' opinion.issue.pk %}"
 							hx-target="#user-form">X</span>
 					</li>
 				</div>
