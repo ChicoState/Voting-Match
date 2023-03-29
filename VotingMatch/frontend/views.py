@@ -51,6 +51,15 @@ class CandidatesView(ListView):
 	def get_queryset(self):
 		return super().get_queryset()
 
+class IssuesView(ListView):
+	template_name = 'issues.html'
+	model = Issue
+	context_object_name = 'issues'
+
+	def get_queryset(self):
+		return super().get_queryset()
+	
+
 class IssueFormViewPt1(LoginRequiredMixin, View):
 	login_url = reverse_lazy('login')
 	template_name = 'issue-form-pt1.html'
