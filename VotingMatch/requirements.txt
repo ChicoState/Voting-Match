@@ -9,3 +9,8 @@ urllib3>=1.26.12
 
 django-extensions>=3.2.1
 django-widget-tweaks>=1.4.12
+django-storages[google]>=1.13
+django-environ>=0.9.0
+
+gunicorn>=20.1.0
+google-cloud-secret-manager>=2.12.0
