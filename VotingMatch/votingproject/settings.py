@@ -55,7 +55,9 @@ else:
 
 SECRET_KEY = env("SECRET_KEY")
 
-DEBUG = env("DEBUG")
+DEBUG = False
+if os.getenv("PYTHON_ENV") == "dev":
+    DEBUG = True
 
 CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
 if CLOUDRUN_SERVICE_URL:
@@ -124,7 +126,7 @@ DATABASES = {"default": env.db()}
 
 # If the flag as been set, configure to use proxy
 if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
-    DATABASES["default"]["HOST"] = "127.0.0.1"
+    DATABASES["default"]["HOST"] = "cloudsql-proxy"
     DATABASES["default"]["PORT"] = 5432
 
 # Password validation

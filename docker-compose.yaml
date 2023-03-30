@@ -2,12 +2,21 @@ version: "3"
 services:
   web:
     build: .
-    command: python VotingMatch/manage.py runserver 0.0.0.0:8000
+    container_name: voting-match
     volumes:
       - .:/app
+      - ./creds.json:/secrets/creds.json
     ports:
       - "8000:8000"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - ./.env
+    command: python VotingMatch/manage.py runserver 0.0.0.0:8000
+  cloudsqlproxy:
+    container_name: cloudsql-proxy
+    image: gcr.io/cloudsql-docker/gce-proxy:1.19.1
+    volumes:
+      - ./creds.json:/secrets/cloudsql/creds.json
+    ports:
+      - 127.0.0.1:5432:5432
+    command: /cloud_sql_proxy -instances="voting-match-381201:us-west1:votingmatch"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/creds.json
+    restart: always
