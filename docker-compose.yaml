@@ -11,6 +11,8 @@ services:
     env_file:
       - ./.env
     command: python VotingMatch/manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - cloudsqlproxy
   cloudsqlproxy:
     container_name: cloudsql-proxy
     image: gcr.io/cloudsql-docker/gce-proxy:1.19.1
