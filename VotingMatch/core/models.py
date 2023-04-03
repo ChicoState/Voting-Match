@@ -38,7 +38,7 @@ class Candidate(models.Model):
     last_name = models.CharField(max_length=50)
     state = models.CharField(max_length=3, choices=STATES, default='N/A')
     party = models.CharField(max_length=1, choices=PARTIES, default='I')
-    candidate_image = models.ImageField(upload_to='candidate_images/')
+    # candidate_image = models.ImageField(upload_to='candidate_images/')
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' (' + self.state  + '-' + self.party + ')'
