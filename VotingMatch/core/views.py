@@ -159,8 +159,8 @@ def form_remove_user_issue(request, id):
 	op = VoterOpinion.objects.get(voter=voter, issue=issue)
 	op.delete()
 
-	selected = voter.issues.all()
-	issues = Issue.objects.all().exclude(name__in=selected.values_list('name', flat=True))
+	selected = voter.opinions.all()
+	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
 
 	context = {
 		'selected': selected,
@@ -189,3 +189,29 @@ def form_save_user_issue(request, id):
 		pass
 	
 	return HttpResponse('')
+
+@login_required
+def form_sort(request):
+	voter = request.user
+	issue_order = request.POST.getlist('user-issue-order')
+
+	size = len(issue_order)
+	weight = 1.0
+	for id in issue_order:
+		try:
+			voter_opinion = VoterOpinion.objects.get(pk=id)
+			voter_opinion.weight = weight
+			voter_opinion.save()
+			weight -= 1.0/size
+		except VoterOpinion.DoesNotExist:
+			pass
+
+
+	selected = voter.opinions.all()
+	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
+
+	context = {
+		'selected': selected,
+		'issues': issues,
+	}
+	return render(request, 'content/form/user-issues.html', context)
