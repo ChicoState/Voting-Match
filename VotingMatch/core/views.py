@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 
 # Models and Forms
-from core.forms import *
 from core.models import *
 
 @login_required
