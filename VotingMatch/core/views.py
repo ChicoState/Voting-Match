@@ -142,6 +142,8 @@ def form_add_user_issue(request, id):
 	op = VoterOpinion(voter=voter, issue=issue, position=0.0, weight=0.0)
 	op.save()
 
+	update_weights(voter)
+
 	selected = voter.opinions.all()
 	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
 
@@ -158,6 +160,8 @@ def form_remove_user_issue(request, id):
 	issue = Issue.objects.get(pk=id)
 	op = VoterOpinion.objects.get(voter=voter, issue=issue)
 	op.delete()
+
+	update_weights(voter)
 
 	selected = voter.opinions.all()
 	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
@@ -215,3 +219,13 @@ def form_sort(request):
 		'issues': issues,
 	}
 	return render(request, 'content/form/user-issues.html', context)
+
+def update_weights(voter):
+	opinions = voter.opinions.all().order_by('weight').reverse()
+
+	size = len(opinions)
+	weight = 1.0
+	for opinion in opinions:
+		opinion.weight = weight
+		opinion.save()
+		weight -= 1.0/size
