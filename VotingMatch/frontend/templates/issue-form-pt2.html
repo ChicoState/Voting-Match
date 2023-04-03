@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<div class="col-8 align-center offset-2 text-center">
+	<h1>Select position</h1>
+	<hr>
+
+	<div class="col-6 align-center offset-3">
+		{% csrf_token %}
+		{% for issue in selected|dictsort:"issue.name" %}
+		<h3>{{issue.issue}}</h3>
+		<div class="container d-flex align-center justify-content-center">
+			<label>Oppose</label>
+			<input type="range" min="-100" max="100" 
+				name="{{issue.pk}}" value="{{issue.position}}"
+				hx-trigger="change delay:250ms"
+				hx-post="{% url 'form-save-user-issue' issue.pk %}"/>
+			<label>Support</label>
+		</div>
+		<br>
+		{% endfor %}
+	</div>
+
+	<a class="btn btn-success" href="{% url 'dashboard' %}">Finish</a>
+</div>
+
+{% endblock %}

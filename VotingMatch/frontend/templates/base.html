@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE HMTL>
+<html lang="en">
+	<head>
+		<!-- Bootstrap v5.3.0 -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+		<!-- JQuery v3.6.4 -->
+		<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>	
+		
+		<!-- HTMX v1.8.6 -->
+		<script src="https://unpkg.com/htmx.org@1.8.6" integrity="sha384-Bj8qm/6B+71E6FQSySofJOUjA/gq330vEqjFx9LakWybUySyI1IQHwPtbTU7bNwx" crossorigin="anonymous"></script>
+	
+		<!-- SortableJS v1.15.0 -->
+		<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+	
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+	</head>
+
+	<body>
+		{% include 'content/navbar.html' %}
+
+		<div class="container-fluid top-20">
+			{% block content %}
+			{% endblock content %}
+		</div>
+
+		<script>
+			document.body.addEventListener('htmx:configRequest', (event) => {
+				event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+			})
+
+			htmx.onLoad(function(content) {
+				var sortables = content.querySelectorAll(".sortable");
+				for (var i = 0; i < sortables.length; i++) {
+					var sortable = sortables[i];
+					new Sortable(sortable, {
+						animation: 150,
+						ghostClass: 'blue-background-class'
+					});
+				}
+			})
+		</script>
+	</body>
+</html>
+	

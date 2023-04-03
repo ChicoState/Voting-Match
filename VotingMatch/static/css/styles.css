@@ -1,0 +1,27 @@
+/* General purpose styles */
+.top-20 {
+	margin-top: 20px;
+}
+
+.border-right {
+	border-right: 1px solid rgba(86,61,124,.2);
+}
+
+/* Dashboard stuff */
+.dashboard-issue-container {
+	margin-bottom: 15px;
+}
+
+.dashboard-candidate-container {
+	margin-bottom: 15px;
+}
+
+.dashboard-news-container {
+	margin-bottom: 15px;
+}
+
+/* Form stuff */
+.form-issue-search {
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+}

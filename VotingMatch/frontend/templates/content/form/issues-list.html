@@ -1,0 +1,13 @@
+<h3> Issues </h3>
+{% csrf_token %}
+<div class="row justify-content-center form-issue-search">
+	<input type="text" class="from-control" name="form-issue-search" placeholder="Search issue..."
+		hx-post="{% url 'form-issue-search' %}"
+		hx-target="#form-issue-search-results"
+		hx-trigger="keyup changed delay:50ms"/>
+</div>
+<br>
+<div class="row justify-content-center" id="form-issue-search-results">
+	{% include 'content/form/issue-search-results.html' %}
+</div>
+<br>
