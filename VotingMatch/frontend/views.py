@@ -87,3 +87,12 @@ class IssueFormViewPt2(LoginRequiredMixin, View):
 			'selected': selected,
 		}
 		return render(request, self.template_name, context)
+
+class ScoresView(LoginRequiredMixin, View):
+	login_url = reverse_lazy('login')
+	template_name = 'scores.html'
+
+	def get(self, request, *args, **kwargs):
+		
+		context = {}
+		return render(request, self.template_name, context)

@@ -10,6 +10,7 @@ urlpatterns = [
 	path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 	path('candidates/', views.CandidatesView.as_view(), name='candidates'),
 	path('issues/', views.IssuesView.as_view(), name='issues'),
+	path('scores/', views.ScoresView.as_view(), name='scores'),
 
 	# Issue form
 	path('issue-form/pt-1', views.IssueFormViewPt1.as_view(), name='issue-form-pt1'),
