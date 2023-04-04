@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View, RedirectView, FormView, ListView
+from django.views.generic.detail import DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 
@@ -50,6 +51,16 @@ class CandidatesView(ListView):
 
 	def get_queryset(self):
 		return super().get_queryset()
+
+class CandidateDetailView(DetailView):
+	template_name = 'candidate_detail.html'
+	model = Candidate
+	context_object_name = 'candidate'
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		return context
+	
 
 class IssuesView(ListView):
 	template_name = 'issues.html'

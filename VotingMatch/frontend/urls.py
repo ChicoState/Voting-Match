@@ -9,6 +9,7 @@ urlpatterns = [
 	path('', views.DashboardRedirect.as_view()),
 	path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 	path('candidates/', views.CandidatesView.as_view(), name='candidates'),
+	path('candidate/<pk>', views.CandidateDetailView.as_view(), name='candidate'),
 	path('issues/', views.IssuesView.as_view(), name='issues'),
 	path('scores/', views.ScoresView.as_view(), name='scores'),
 
