@@ -2,7 +2,7 @@
 
 {% for candidate in candidates|dictsort:"last_name" %}
 <div class="col-3 pt-3 text-center">
-	<a href="#">
+	<a href="{% url 'candidate' candidate.pk %}">
 		<div class="candidate-card">
 			{% with 'images/'|add:candidate.last_name|add:'_'|add:candidate.first_name|add:'.jpg' as candidate_image %}
 			<img class="candidate-card-image" src="{% static candidate_image %}" alt="Oopsie"></img>
