@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import View, RedirectView, FormView, ListView
+from django.views.generic.detail import DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from frontend.forms import RegisterForm, IssueForm
 from core.models import Candidate, Voter, Issue
@@ -51,6 +52,37 @@ class CandidatesView(ListView):
 	def get_queryset(self):
 		return super().get_queryset()
 
+class CandidateDetailView(DetailView):
+	template_name = 'candidate_detail.html'
+	model = Candidate
+	context_object_name = 'candidate'
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		return context
+
+class CandidateEditView(UserPassesTestMixin, DetailView):
+	template_name = 'candidate_edit.html'
+	model = Candidate
+	context_object_name = 'candidate'
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["issues"] = Issue.objects.all()
+		return context
+
+	def test_func(self):
+		return self.request.user.is_staff
+
+class IssuesView(ListView):
+	template_name = 'issues.html'
+	model = Issue
+	context_object_name = 'issues'
+
+	def get_queryset(self):
+		return super().get_queryset()
+	
+
 class IssueFormViewPt1(LoginRequiredMixin, View):
 	login_url = reverse_lazy('login')
 	template_name = 'issue-form-pt1.html'
@@ -77,4 +109,13 @@ class IssueFormViewPt2(LoginRequiredMixin, View):
 		context = {
 			'selected': selected,
 		}
+		return render(request, self.template_name, context)
+
+class ScoresView(LoginRequiredMixin, View):
+	login_url = reverse_lazy('login')
+	template_name = 'scores.html'
+
+	def get(self, request, *args, **kwargs):
+		
+		context = {}
 		return render(request, self.template_name, context)

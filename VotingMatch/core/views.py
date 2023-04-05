@@ -6,134 +6,11 @@ from django.shortcuts import render, redirect
 
 # Decorators
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_http_methods
 
 # Models and Forms
-from core.forms import *
 from core.models import *
-
-# Old views, will be removed soon.
-def home(request):
-	candidates = Candidate.objects.all()
-	
-	context = {
-		'candidates': candidates,
-	}
-
-	return render(request, 'core/home.html', context)
-
-def voter_form(request):
-	form = VoterForm()
-
-	context = {
-		'form': form,
-	}
-
-	# On form submission
-	if request.method == 'POST':			
-		form = VoterForm(request.POST)
-		if form.is_valid():
-			voter = Voter.objects.get(id=1)
-
-			def paired(iterable):
-				a = iter(iterable)
-				return zip(a,a)
-			
-			# Iterate through every 2 form entries
-			for issue, issue_w in paired(form.cleaned_data):
-				position = float(form.cleaned_data[issue])
-				weight = float(form.cleaned_data[issue_w])
-
-				# Update existing db entry, otherwise create it
-				try:
-					VoterOpinion.objects.get(issue=Issue.objects.get(name=issue), voter=voter)
-					op = VoterOpinion.objects.filter(issue=Issue.objects.get(name=issue), voter=voter).update(position=position, weight=weight)
-				except VoterOpinion.DoesNotExist:
-					op = VoterOpinion(
-						issue=Issue.objects.get(name=issue),
-						position=position,
-						voter=voter,
-						weight=weight,
-					)
-					op.save()
-				
-			# Candidate scoring goes here
-			for candidate in Candidate.objects.all():
-				score = 0
-				for issue in Issue.objects.all():
-					vop = VoterOpinion.objects.get(voter=voter, issue=issue)
-					cop = CandidateOpinion.objects.get(candidate=candidate, issue=issue)
-
-					# Calculate score
-					score += abs(vop.position-cop.position)*vop.weight
-
-				# Update existing db entry, otherwise create it
-				try:
-					CandidateScore.objects.get(candidate=candidate, voter=voter)
-					cscore = CandidateScore.objects.filter(candidate=candidate, voter=voter).update(score=score)
-				except CandidateScore.DoesNotExist:
-					cscore = CandidateScore(
-						candidate=candidate,
-						voter=voter,
-						score=score,
-					)
-					cscore.save()
-
-			
-			return redirect('/candidate-scores/'+str(voter.id))
-
-	return render(request, 'core/voter-form.html', context)
-
-def candidate_form(request, id):
-	candidate = Candidate.objects.get(id=id)
-	form = CandidateForm()
-
-	context = {
-		'candidate': candidate,
-		'form': form,
-	}
-
-	if request.method == 'POST':			
-		form = CandidateForm(request.POST)
-		if form.is_valid():
-			# Iterate through every form entry
-			for issue in form.cleaned_data:
-				position = float(form.cleaned_data[issue])
-
-				# Update existing db entry, otherwise create it
-				try:
-					CandidateOpinion.objects.get(issue=Issue.objects.get(name=issue), candidate=candidate)
-					op = CandidateOpinion.objects.filter(issue=Issue.objects.get(name=issue), candidate=candidate).update(position=position)
-				except CandidateOpinion.DoesNotExist:
-					op = CandidateOpinion(
-						candidate=candidate,
-						issue=Issue.objects.get(name=issue),
-						position=position,
-					)
-					op.save()
-							
-			return redirect('home')
-
-	return render(request, 'core/candidate-form.html', context)
-
-def candidate_scores(request, id):
-	voter = Voter.objects.get(id=id)
-	candidates = Candidate.objects.all()
-	issues = Issue.objects.all()
-	candidate_opinions = CandidateOpinion.objects.all()
-	voter_opinions = VoterOpinion.objects.all()
-	candidate_scores = CandidateScore.objects.all()
-
-	context = {
-		'voter': voter,
-		'candidates': candidates,
-		'issues': issues,
-		'candidateopinions': candidate_opinions,
-		'voteropinions': voter_opinions,
-		'candidatescores': candidate_scores,
-	}
-
-	return render(request, 'core/candidate-scores.html', context)
 
 @login_required
 def form_add_user_issue(request, id):
@@ -141,6 +18,8 @@ def form_add_user_issue(request, id):
 	issue = Issue.objects.get(pk=id)
 	op = VoterOpinion(voter=voter, issue=issue, position=0.0, weight=0.0)
 	op.save()
+
+	update_weights(voter)
 
 	selected = voter.opinions.all()
 	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
@@ -159,8 +38,10 @@ def form_remove_user_issue(request, id):
 	op = VoterOpinion.objects.get(voter=voter, issue=issue)
 	op.delete()
 
-	selected = voter.issues.all()
-	issues = Issue.objects.all().exclude(name__in=selected.values_list('name', flat=True))
+	update_weights(voter)
+
+	selected = voter.opinions.all()
+	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
 
 	context = {
 		'selected': selected,
@@ -188,4 +69,56 @@ def form_save_user_issue(request, id):
 	except VoterOpinion.DoesNotExist:
 		pass
 	
+	return HttpResponse('')
+
+@login_required
+def form_sort(request):
+	voter = request.user
+	issue_order = request.POST.getlist('user-issue-order')
+
+	size = len(issue_order)
+	weight = 1.0
+	for id in issue_order:
+		try:
+			voter_opinion = VoterOpinion.objects.get(pk=id)
+			voter_opinion.weight = weight
+			voter_opinion.save()
+			weight -= 1.0/size
+		except VoterOpinion.DoesNotExist:
+			pass
+
+
+	selected = voter.opinions.all()
+	issues = Issue.objects.all().exclude(name__in=voter.issues.all().values_list('name', flat=True))
+
+	context = {
+		'selected': selected,
+		'issues': issues,
+	}
+	return render(request, 'content/form/user-issues.html', context)
+
+def update_weights(voter):
+	opinions = voter.opinions.all().order_by('weight').reverse()
+
+	size = len(opinions)
+	weight = 1.0
+	for opinion in opinions:
+		opinion.weight = weight
+		opinion.save()
+		weight -= 1.0/size
+
+@staff_member_required
+def edit_candidate_issue(request, id):
+	candidate = Candidate.objects.get(pk=id)
+	issue = Issue.objects.get(pk=request.POST.get('issue'))
+	value = float(request.POST.get('value'))
+
+	try:
+		op = CandidateOpinion.objects.get(candidate=candidate, issue=issue)
+		op.position = value
+		op.save()
+	except CandidateOpinion.DoesNotExist:
+		op = CandidateOpinion(candidate=candidate, issue=issue, position=value)
+		op.save()
+
 	return HttpResponse('')

@@ -9,6 +9,9 @@ urlpatterns = [
 	path('', views.DashboardRedirect.as_view()),
 	path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 	path('candidates/', views.CandidatesView.as_view(), name='candidates'),
+	path('candidate/<pk>', views.CandidateDetailView.as_view(), name='candidate'),
+	path('issues/', views.IssuesView.as_view(), name='issues'),
+	path('scores/', views.ScoresView.as_view(), name='scores'),
 
 	# Issue form
 	path('issue-form/pt-1', views.IssueFormViewPt1.as_view(), name='issue-form-pt1'),
@@ -18,4 +21,7 @@ urlpatterns = [
 	path('login/', views.Login.as_view(), name='login'),
 	path('logout/', views.Logout.as_view(), name='logout'),
 	path('register/', views.RegisterView.as_view(), name='register'),
+
+	# Staff-only Views
+	path('candidate/<pk>/edit/', views.CandidateEditView.as_view(), name='edit-candidate'),
 ]

@@ -165,8 +165,9 @@ USE_TZ = True
 
 GS_BUCKET_NAME = env("GS_BUCKET_NAME")
 STATIC_URL = "/static/"
-DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
-STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+if not os.getenv("PYTHON_ENV") == "dev":
+	DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+	STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 GS_DEFAULT_ACL = "publicRead"
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
