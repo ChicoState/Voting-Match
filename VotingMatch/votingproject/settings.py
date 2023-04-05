@@ -64,7 +64,7 @@ SUBDOMAINS = env('SUBDOMAINS', default=None)
 if CLOUDRUN_SERVICE_URL:
     if SUBDOMAINS:
         subs = SUBDOMAINS.split(',')
-        ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc] + subs
+        ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc] + [urlparse(x).netloc for x in subs]
         CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL] + subs
     else:
         ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
