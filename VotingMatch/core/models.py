@@ -47,7 +47,7 @@ class Candidate(models.Model):
 class Issue(models.Model):
     name = models.CharField(max_length=200, unique=True)
     candidate_opinion = models.ManyToManyField(Candidate, through='CandidateOpinion', related_name='issues')
-    issue_voter_opinion = models.ManyToManyField(Voter, through='VoterOpinion', related_name='issues')
+    voter_opinion = models.ManyToManyField(Voter, through='VoterOpinion', related_name='issues')
 
     def __str__(self):
         return self.name
@@ -73,7 +73,7 @@ class VoterOpinion(models.Model):
 
 class CandidateScore(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    voter_score = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='scores')
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='scores')
     score = models.FloatField()
 
     def __str__(self):
