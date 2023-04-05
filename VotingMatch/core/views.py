@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 
 # Decorators
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_http_methods
 
 # Models and Forms
@@ -105,3 +106,19 @@ def update_weights(voter):
 		opinion.weight = weight
 		opinion.save()
 		weight -= 1.0/size
+
+@staff_member_required
+def edit_candidate_issue(request, id):
+	candidate = Candidate.objects.get(pk=id)
+	issue = Issue.objects.get(pk=request.POST.get('issue'))
+	value = float(request.POST.get('value'))
+
+	try:
+		op = CandidateOpinion.objects.get(candidate=candidate, issue=issue)
+		op.position = value
+		op.save()
+	except CandidateOpinion.DoesNotExist:
+		op = CandidateOpinion(candidate=candidate, issue=issue, position=value)
+		op.save()
+
+	return HttpResponse('')

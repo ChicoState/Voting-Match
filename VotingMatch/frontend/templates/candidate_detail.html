@@ -4,4 +4,8 @@
 
 {{candidate.last_name}}, {{candidate.first_name}}
 
+{% if user.is_staff %}
+	<a class="btn btn-primary btn-sm" href="{% url 'edit-candidate' candidate.pk %}">Edit</a>
+{% endif %}
+
 {% endblock %}
