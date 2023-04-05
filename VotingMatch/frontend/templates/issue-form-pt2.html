@@ -25,7 +25,10 @@
 		
 	</div>
 
-	<a class="btn btn-success" href="{% url 'scores' %}">Finish</a>
+	{% csrf_token %}
+	<button class="btn btn-success" hx-trigger="click throttle:50ms" hx-post="{% url 'form-calculate-user-scores' %}">Finish</button>
+
+	<div id="none"></div>
 </div>
 
 {% endblock %}

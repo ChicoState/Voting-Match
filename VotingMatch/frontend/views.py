@@ -116,6 +116,9 @@ class ScoresView(LoginRequiredMixin, View):
 	template_name = 'scores.html'
 
 	def get(self, request, *args, **kwargs):
-		
-		context = {}
+		scores = request.user.scores.all()
+
+		context = {
+			'scores': scores,
+		}
 		return render(request, self.template_name, context)
