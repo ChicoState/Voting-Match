@@ -60,9 +60,15 @@ if os.getenv("PYTHON_ENV") == "dev":
     DEBUG = True
 
 CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
+SUBDOMAINS = env('SUBDOMAINS', default=None)
 if CLOUDRUN_SERVICE_URL:
-    ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
-    CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
+    if SUBDOMAINS:
+        subs = SUBDOMAINS.split(',')
+        ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc] + [urlparse(x).netloc for x in subs]
+        CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL] + subs
+    else:
+        ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
+        CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 else:
