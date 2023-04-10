@@ -16,7 +16,7 @@ class DashboardView(LoginRequiredMixin, View):
 	def get(self, request, *args, **kwargs):
 		voter = self.request.user
 		context = {
-			'candidates': voter.scores.all(),
+			'scores': voter.scores.all(),
 			'issues': voter.issues.all(),
 		}
 		return render(request, self.template_name, context)
