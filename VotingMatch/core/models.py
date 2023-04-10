@@ -7,6 +7,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+from core.managers import CandidateOpinionManager
+
 # Extending the User model:
 # https://docs.djangoproject.com/en/dev/topics/auth/customizing/#extending-the-existing-user-model
 class Voter(AbstractUser):
@@ -38,7 +40,7 @@ class Candidate(models.Model):
     last_name = models.CharField(max_length=50)
     state = models.CharField(max_length=3, choices=STATES, default='N/A')
     party = models.CharField(max_length=1, choices=PARTIES, default='I')
-    # candidate_image = models.ImageField(upload_to='candidate_images/')
+    image_name = models.CharField(max_length=50, default='')
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' (' + self.state  + '-' + self.party + ')'
@@ -47,7 +49,7 @@ class Candidate(models.Model):
 class Issue(models.Model):
     name = models.CharField(max_length=200, unique=True)
     candidate_opinion = models.ManyToManyField(Candidate, through='CandidateOpinion', related_name='issues')
-    issue_voter_opinion = models.ManyToManyField(Voter, through='VoterOpinion', related_name='issues')
+    voter_opinion = models.ManyToManyField(Voter, through='VoterOpinion', related_name='issues')
 
     def __str__(self):
         return self.name
@@ -58,6 +60,7 @@ class CandidateOpinion(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     position = models.FloatField() # 1.0 is favors, 0.0 is mixed or no opinion, -1.0 is opposes
+    objects = CandidateOpinionManager()
 
     def __str__(self):
         return str(self.candidate) + ': ' + str(self.issue)
@@ -73,7 +76,7 @@ class VoterOpinion(models.Model):
 
 class CandidateScore(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    voter_score = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='scores')
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE, related_name='scores')
     score = models.FloatField()
 
     def __str__(self):

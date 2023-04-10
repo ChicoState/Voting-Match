@@ -9,6 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_http_methods
 
+# Utility Functions
+from django.urls import reverse
+
 # Models and Forms
 from core.models import *
 
@@ -122,3 +125,37 @@ def edit_candidate_issue(request, id):
 		op.save()
 
 	return HttpResponse('')
+
+@login_required
+def form_calculate_user_scores(request):
+	voter = request.user
+
+	# For every candidate
+	for candidate in Candidate.objects.all():
+		score = 0
+
+		# Get every user opinion
+		for opinion in voter.opinions.all():
+			issue = opinion.issue
+
+			# Get candidates opinion on same issue
+			try:
+				cand_op = CandidateOpinion.objects.get(candidate=candidate, issue=issue)
+			except CandidateOpinion.DoesNotExist:
+				continue
+
+			# Update score
+			score += abs((opinion.position/100)-cand_op.position)*opinion.weight
+
+		# Update or create score object
+		try:
+			cand_score = CandidateScore.objects.get(candidate=candidate, voter=voter)
+			cand_score.score = float(score)
+			cand_score.save()
+		except CandidateScore.DoesNotExist:
+			cand_score = CandidateScore(candidate=candidate, voter=voter, score=float(score))
+			cand_score.save()
+	
+	response = HttpResponse()
+	response['HX-Redirect'] = reverse('scores')
+	return response

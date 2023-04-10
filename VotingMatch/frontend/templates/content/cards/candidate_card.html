@@ -4,13 +4,11 @@
 <div class="col-3 pt-3 text-center">
 	<a href="{% url 'candidate' candidate.pk %}">
 		<div class="candidate-card">
-			{% with 'images/'|add:candidate.last_name|add:'_'|add:candidate.first_name|add:'.jpg' as candidate_image %}
-			<img class="candidate-card-image" src="{% static candidate_image %}" alt="Oopsie"></img>
+			<img class="candidate-card-image" src="{% static candidate.image_name %}" alt="Oopsie"></img>
 			<div class="card-container">
 				<h4><b>{{candidate}}</b></h4>
 				<p>{% lorem 5 w %}</p>
 			</div>
-			{% endwith %}
 		</div>
 	</a>
 </div>
