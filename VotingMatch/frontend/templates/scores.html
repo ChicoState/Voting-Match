@@ -48,13 +48,13 @@
 												</thead>
 												<tbody>
 													{% for opinion in opinions%}
-													<tr align="center">
-														{% if opinion.position > 0 %}
-														<td> <img class="score-position-icon" src="{% static 'images/icons/support.png' %}" alt="support"/> </td>
-														{% else %}
-														<td> <img class="score-position-icon" src="{% static 'images/icons/oppose.png' %}" alt="oppose"/> </td>
-														{% endif %}
-													</tr>
+														<tr align="center">
+															{% if opinion.position > 0 %}
+															<td> <img class="score-position-icon" src="{% static 'images/icons/support.png' %}" alt="support"/> </td>
+															{% else %}
+															<td> <img class="score-position-icon" src="{% static 'images/icons/oppose.png' %}" alt="oppose"/> </td>
+															{% endif %}
+														</tr>
 													{% endfor %}
 												</tbody>
 											</table>
