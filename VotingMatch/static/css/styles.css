@@ -69,3 +69,19 @@ a {
 	height: 350px;
 	width: 100%;
 }
+
+/* Scores */
+.score-position-icon {
+	height: 25px;
+	width: 25px;
+}
+
+.score-candidate-image {
+	height: 300px;
+	width: 250px;
+}
+
+/* Carousel indicators */
+.carousel-control-next, .carousel-control-prev {
+	filter: invert(100%);
+}

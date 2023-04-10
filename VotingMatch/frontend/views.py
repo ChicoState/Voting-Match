@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from frontend.forms import RegisterForm, IssueForm
-from core.models import Candidate, Voter, Issue
+from core.models import Candidate, Voter, Issue, CandidateOpinion
 
 class DashboardView(LoginRequiredMixin, View):
 	login_url = reverse_lazy('login')
@@ -116,9 +116,12 @@ class ScoresView(LoginRequiredMixin, View):
 	template_name = 'scores.html'
 
 	def get(self, request, *args, **kwargs):
-		scores = request.user.scores.all()
+		voter = request.user
+		opinions = voter.opinions.all()
+		cand_ops = CandidateOpinion.objects.get_voter_order(voter)
 
 		context = {
-			'scores': scores,
+			'opinions': opinions,
+			'cand_ops': cand_ops,
 		}
 		return render(request, self.template_name, context)
