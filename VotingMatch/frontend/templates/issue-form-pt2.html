@@ -10,7 +10,7 @@
 	<div class="col-6 align-center offset-3">
 		{% csrf_token %}
 
-		{% for issue in selected|dictsort:"issue.name" %}
+		{% for issue in selected|dictsortreversed:"weight" %}
 		<h3>{{issue.issue}}</h3>
 		<div class="container d-flex align-center justify-content-center">
 			<label>Oppose</label>
