@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0005_rename_voter_score_candidatescore_voter_and_more'),
+        ("core", "0005_rename_voter_score_candidatescore_voter_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='candidate',
-            name='image_name',
-            field=models.CharField(default='', max_length=50),
+            model_name="candidate",
+            name="image_name",
+            field=models.CharField(default="", max_length=50),
         ),
     ]
