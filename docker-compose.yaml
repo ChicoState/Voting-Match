@@ -35,5 +35,5 @@ services:
     container_name: html-linter
     volumes:
       - .:/app
-    command: npx htmlhint "**/*.html"
+    command: npx htmlhint --config .github/linters/.htmlhintrc "**/*.html"
 
