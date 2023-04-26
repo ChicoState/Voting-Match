@@ -1,3 +1,22 @@
 {
-	"doctype-first": false
+	"doctype-first": false,
+
+	"attr-lowercase": true,
+	"attr-no-duplication": true,
+	"attr-no-unnecessary-whitespace": true,
+	"attr-unsafe-chars": true,
+	"attr-value-double-quotes": true,
+	"attr-sorted": true,
+	
+	"tag-pair": true,
+	"tagname-lowercase": true,
+	"tagname-specialchars": true,
+	"empty-tag-not-self-closed": true,
+	
+	"id-class-ad-disabled": true,
+	"id-class-value": "dash",
+	"id-unique": true,
+
+	"space-tab-mixed-disabled": "space4",
+	"spec-char-escape": true
 }
