@@ -18,8 +18,9 @@
                     </li>
                 </div>
             {% endfor %}
-        {% else %}
-            <p>No issues selected.</p>
-        {% endif %}
-    </div>
-    <div class="col-6 text-center" id="form-issues">{% include 'content/form/issues-list.html' %}</div>
+        </form>
+    {% else %}
+        <p>No issues selected.</p>
+    {% endif %}
+</div>
+<div class="col-6 text-center" id="form-issues">{% include "content/form/issues-list.html" %}</div>
