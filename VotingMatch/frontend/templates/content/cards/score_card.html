@@ -1,26 +1,29 @@
 {% load static %}
-
 {% for score in scores|dictsort:"score" %}
-	<div class="col">
-		<div class="row">
-			<div class="d-flex justify-content-center">
-				<a href="#">
-					<div class="score-card">
-						<div class="row align-items-center">
-							<div class="col-3">
-								<img class="score-card-image" src={% static score.candidate.image_name %} alt="Oopsie">
-							</div>
-							<div class="col-9">
-								<div class="card-container text-center">
-									<h4><b>{{score.candidate}}</b></h4>
-									<p>{{score.score}}</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-		<br>
-	</div>
+    <div class="col">
+        <div class="row">
+            <div class="d-flex justify-content-center">
+                <a href="#">
+                    <div class="score-card">
+                        <div class="row align-items-center">
+                            <div class="col-3">
+                                <img class="score-card-image"
+                                     src="{% static score.candidate.image_name %}"
+                                     alt="Oopsie">
+                            </div>
+                            <div class="col-9">
+                                <div class="card-container text-center">
+                                    <h4>
+                                        <b>{{ score.candidate }}</b>
+                                    </h4>
+                                    <p>{{ score.score }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <br>
+    </div>
 {% endfor %}

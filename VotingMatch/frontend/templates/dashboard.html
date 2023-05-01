@@ -1,49 +1,41 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<div class="row">
-	<div class="col-8 align-content-center border-right">
-		<section>
-			<div class="container">
-				<div class="row">
-					<div class="dashboard-header">
-						<h3> Your Issues </h3>
-						<hr>
-					</div>
-					{% if issues %}
-						{% include 'content/cards/issue_card.html' %}
-					{% else %}
-						<div class="col text-center">
-							You have not selected any issues.
-						</div>
-					{% endif %}
-				</div>
-			</div>
-		</section>
-		<br>
-		<section>
-			{% include 'content/dashboard/news.html' %}
-		</section>
-	</div>
-	
-	<div class="col-4 align-content-center">
-		<section>
-			<div class="row">
-				<div class="dashboard-header">
-					<h3>Your Top Candidates</h3>
-					<hr>
-				</div>
-				{% if scores %}
-					{% include 'content/cards/score_card.html' %}
-				{% else %}
-					<div class="col text-center">
-						You don't have any candidate scores.
-					</div>
-				{% endif %}
-			</div>
-		</section>
-	</div>
-</div>
-
-{% endblock %}
+    <div class="row">
+        <div class="col-8 align-content-center border-right">
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="dashboard-header">
+                            <h3>Your Issues</h3>
+                            <hr>
+                        </div>
+                        {% if issues %}
+                            {% include "content/cards/issue_card.html" %}
+                        {% else %}
+                            <div class="col text-center">You have not selected any issues.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+            <br>
+            <section>
+                {% include "content/dashboard/news.html" %}
+            </section>
+        </div>
+        <div class="col-4 align-content-center">
+            <section>
+                <div class="row">
+                    <div class="dashboard-header">
+                        <h3>Your Top Candidates</h3>
+                        <hr>
+                    </div>
+                    {% if scores %}
+                        {% include "content/cards/score_card.html" %}
+                    {% else %}
+                        <div class="col text-center">You don't have any candidate scores.</div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock content %}

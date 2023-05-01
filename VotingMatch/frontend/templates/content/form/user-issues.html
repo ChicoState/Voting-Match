@@ -1,26 +1,25 @@
 <div class="col-6 text-center border-right" id="form-user-issues">
-	<h3> My Issues </h3>
-	{% if selected %}
-		{% csrf_token %}
-		<form class="sortable list-group col-12" hx-trigger="end" hx-post="{% url 'form-sort' %}" hx-target="#user-form">
-			{% for opinion in selected|dictsortreversed:"weight" %}
-				<div>
-					<input type="hidden" name="user-issue-order" value="{{opinion.pk}}"/>
-					<li class="list-group-item d-flex justify-content-between">
-						{{forloop.counter}}. {{opinion.issue}}
-						<span class="badge bg-danger"
-							style="cursor: pointer;"
-							hx-delete="{% url 'form-remove-user-issue' opinion.issue.pk %}"
-							hx-target="#user-form">X</span>
-
-					</li>
-				</div>
-			{% endfor %}
-	{% else %}
-		<p> No issues selected. </p>
-	{% endif %}
-</div>
-
-<div class="col-6 text-center" id="form-issues">
-	{% include 'content/form/issues-list.html' %}
-</div>
+    <h3>My Issues</h3>
+    {% if selected %}
+        {% csrf_token %}
+        <form class="sortable list-group col-12"
+              hx-trigger="end"
+              hx-post="{% url 'form-sort' %}"
+              hx-target="#user-form">
+            {% for opinion in selected|dictsortreversed:"weight" %}
+                <div>
+                    <input type="hidden" name="user-issue-order" value="{{ opinion.pk }}" />
+                    <li class="list-group-item d-flex justify-content-between">
+                        {{ forloop.counter }}. {{ opinion.issue }}
+                        <span class="badge bg-danger"
+                              style="cursor: pointer"
+                              hx-delete="{% url 'form-remove-user-issue' opinion.issue.pk %}"
+                              hx-target="#user-form">X</span>
+                    </li>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No issues selected.</p>
+        {% endif %}
+    </div>
+    <div class="col-6 text-center" id="form-issues">{% include 'content/form/issues-list.html' %}</div>
