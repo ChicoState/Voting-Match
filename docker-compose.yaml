@@ -13,7 +13,7 @@ services:
     command: python VotingMatch/manage.py runserver 0.0.0.0:8000
     depends_on:
       - cloudsqlproxy
-      - htmllinter
+      - djlint
       - pylinter
   cloudsqlproxy:
     container_name: cloudsql-proxy
@@ -32,8 +32,8 @@ services:
     command: black .
   htmllinter:
     build: .
-    container_name: html-linter
+    container_name: djlint
     volumes:
       - .:/app
-    command: npx htmlhint --config .github/linters/.htmlhintrc "**/*.html"
+    command: djlint . --ignore "H006,H030,H031"
 
