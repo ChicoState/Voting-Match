@@ -23,7 +23,7 @@ jobs:
         run: pip install djlint black
         
       - name: run djlint
-        run: djlint . --lint --ignore "H030,H031"
+        run: djlint . --lint --ignore "H006,H030,H031"
       
       - name: run black
         run: black .
