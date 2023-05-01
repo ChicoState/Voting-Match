@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% block content %}
     <div class="row justify-content-center">
@@ -52,58 +52,59 @@
                                                                 <th scope="col">
                                                                     <h3>#{{ forloop.counter }}. {{ candidate.last_name }}, {{ candidate.first_name }}</h3>
                                                                 </th>
-                                                            </thead>
-                                                            <tbody>
-                                                                {% for opinion in opinions %}
-                                                                    <tr align="center">
-                                                                        {% if opinion.position > 0 %}
-                                                                            <td>
-                                                                                <img class="score-position-icon"
-                                                                                     src="{% static 'images/icons/support.png' %}"
-                                                                                     alt="support" />
-                                                                            </td>
-                                                                        {% else %}
-                                                                            <td>
-                                                                                <img class="score-position-icon"
-                                                                                     src="{% static 'images/icons/oppose.png' %}"
-                                                                                     alt="oppose" />
-                                                                            </td>
-                                                                        {% endif %}
-                                                                    </tr>
-                                                                {% endfor %}
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="col">
-                                                        <img class="score-candidate-image"
-                                                             src="{% static candidate.image_name %}"
-                                                             alt="oopsie" />
-                                                    </div>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for opinion in opinions %}
+                                                                <tr align="center">
+                                                                    {% if opinion.position > 0 %}
+                                                                        <td>
+                                                                            <img class="score-position-icon"
+                                                                                 src="{% static 'images/icons/support.png' %}"
+                                                                                 alt="support" />
+                                                                        </td>
+                                                                    {% else %}
+                                                                        <td>
+                                                                            <img class="score-position-icon"
+                                                                                 src="{% static 'images/icons/oppose.png' %}"
+                                                                                 alt="oppose" />
+                                                                        </td>
+                                                                    {% endif %}
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col">
+                                                    <img class="score-candidate-image"
+                                                         src="{% static candidate.image_name %}"
+                                                         alt="oopsie" />
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    </div>
-                                    <button class="carousel-control-prev"
-                                            type="button"
-                                            data-bs-target="#candidate-carousel"
-                                            data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next"
-                                            type="button"
-                                            data-bs-target="#candidate-carousel"
-                                            data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button>
+                                        </div>
+                                    {% endfor %}
                                 </div>
+                                <button class="carousel-control-prev"
+                                        type="button"
+                                        data-bs-target="#candidate-carousel"
+                                        data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next"
+                                        type="button"
+                                        data-bs-target="#candidate-carousel"
+                                        data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                {% else %}
-                    <p>Hmmm... something is missing...</p>
-                {% endif %}
-            </div>
+                </div>
+            {% else %}
+                <p>Hmmm... something is missing...</p>
+            {% endif %}
         </div>
-    {% endblock %}
+    </div>
+{% endblock content %}
