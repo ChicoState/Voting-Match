@@ -1,8 +1,6 @@
-[![Lint Code Base](https://github.com/ChicoState/Voting-Match/actions/workflows/linter.yml/badge.svg?branch=main)](https://github.com/ChicoState/Voting-Match/actions/workflows/linter.yml)
-
 # Voting-Match
 
-[![GitHub Super-Linter](https://github.com/ChicoState/Voting-Match/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![Lint Code Base](https://github.com/ChicoState/Voting-Match/actions/workflows/linter.yml/badge.svg?branch=main)](https://github.com/ChicoState/Voting-Match/actions/workflows/linter.yml)
 
 ## Running the project locally
 To launch the website:
