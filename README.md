@@ -1,3 +1,5 @@
+[![Lint Code Base](https://github.com/ChicoState/Voting-Match/actions/workflows/linter.yml/badge.svg?branch=main)](https://github.com/ChicoState/Voting-Match/actions/workflows/linter.yml)
+
 # Voting-Match
 
 ## Running the project locally
