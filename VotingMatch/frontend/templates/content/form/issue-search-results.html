@@ -1,18 +1,17 @@
 <div class="col-11">
-	{% if issues %}
-		{% csrf_token %}
-		<ul class="list-group col-xs-12">
-			{% for issue in issues|dictsort:"name"|slice:"10" %}
-				<li class="list-group-item d-flex justify-content-between align-items-center">
-					{{issue}}
-					<span class="badge rounded-pill bg-success"
-						hx-post="{% url 'form-add-user-issue' issue.pk %}"
-						hx-target="#user-form"
-						style="cursor: pointer;">Add</span>
-				</li>
-			{% endfor %}
-		</ul>
-	{% else %}
-		<p>No search results.</p>
-	{% endif %}
+    {% if issues %}
+        {% csrf_token %}
+        <ul class="list-group col-xs-12">
+            {% for issue in issues|dictsort:"name"|slice:"10" %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ issue }}
+                    <span class="badge rounded-pill bg-success cursor-pointer"
+                          hx-post="{% url 'form-add-user-issue' issue.pk %}"
+                          hx-target="#user-form">Add</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No search results.</p>
+    {% endif %}
 </div>

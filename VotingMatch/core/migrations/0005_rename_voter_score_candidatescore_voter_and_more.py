@@ -4,20 +4,19 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0004_remove_candidate_candidate_image'),
+        ("core", "0004_remove_candidate_candidate_image"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='candidatescore',
-            old_name='voter_score',
-            new_name='voter',
+            model_name="candidatescore",
+            old_name="voter_score",
+            new_name="voter",
         ),
         migrations.RenameField(
-            model_name='issue',
-            old_name='issue_voter_opinion',
-            new_name='voter_opinion',
+            model_name="issue",
+            old_name="issue_voter_opinion",
+            new_name="voter_opinion",
         ),
     ]

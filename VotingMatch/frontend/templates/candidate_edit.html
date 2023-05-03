@@ -1,59 +1,53 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<div class="row justify-content-center">
-	<div class="col-10 text-center">
-		<h3>{{candidate.last_name}}, {{candidate.first_name}}</h3>
-
-		<form>
-			{% csrf_token %}
-			{% for issue in issues %}
-				<div class="col-12 text-center pt-1 mb-1">
-					<h5>{{issue}}</h5>
-				</div>
-				<div>
-					<input type="radio" name="issue-radio-{{issue.pk}}" class="btn-check" id="btn-opposes-{{issue.pk}}" autocomplete="off">
-					<label class="btn btn-outline-danger" for="btn-opposes-{{issue.pk}}"
-						hx-trigger="click" 
-						hx-post="{% url 'edit-candidate-issue' candidate.pk %}"
-						hx-vals='{"issue": "{{issue.pk}}",
-							"value": "-1.0"
-						}' 
-						hx-target="#none">
-						Opposes
-					</label>
-					<input type="radio" name="issue-radio-{{issue.pk}}" class="btn-check" id="btn-mixed-{{issue.pk}}" autocomplete="off">
-					<label class="btn btn-outline-secondary" for="btn-mixed-{{issue.pk}}"
-						hx-trigger="click" 
-						hx-post="{% url 'edit-candidate-issue' candidate.pk %}"
-						hx-vals='{
-							"issue": "{{issue.pk}}",
-							"value": "0.0"
-						}' 
-						hx-target="#none">
-						Mixed
-					</label>
-					<input type="radio" name="issue-radio-{{issue.pk}}" class="btn-check" id="btn-supports-{{issue.pk}}" autocomplete="off">
-					<label class="btn btn-outline-success" for="btn-supports-{{issue.pk}}"
-						hx-trigger="click" 
-						hx-post="{% url 'edit-candidate-issue' candidate.pk %}"
-						hx-vals='{
-							"issue": "{{issue.pk}}",
-							"value": "1.0"
-						}' 
-						hx-target="#none">
-						Supports
-					</label>
-				</div>
-			{% endfor %}
-		</form>
-
-		<a class="btn btn-success" href="{% url 'candidate' candidate.pk %}">Submit</a>
-
-		<div id="none"></div>
-
-	</div>
-</div>
-
-{% endblock %}
+    <div class="row justify-content-center">
+        <div class="col-10 text-center">
+            <h3>{{ candidate.last_name }}, {{ candidate.first_name }}</h3>
+            <form>
+                {% csrf_token %}
+                {% for issue in issues %}
+                    <div class="col-12 text-center pt-1 mb-1">
+                        <h5>{{ issue }}</h5>
+                    </div>
+                    <div>
+                        <input class="btn-check"
+                               id="btn-opposes-{{ issue.pk }}"
+                               name="issue-radio-{{ issue.pk }}"
+                               type="radio"
+                               autocomplete="off">
+                        <label class="btn btn-outline-danger"
+                               for="btn-opposes-{{ issue.pk }}"
+                               hx-trigger="click"
+                               hx-post="{% url 'edit-candidate-issue' candidate.pk %}"
+                               hx-vals='{"issue": "{{ issue.pk }}", "value": "-1.0" }'
+                               hx-target="#none">Opposes</label>
+                        <input type="radio"
+                               name="issue-radio-{{ issue.pk }}"
+                               class="btn-check"
+                               id="btn-mixed-{{ issue.pk }}"
+                               autocomplete="off">
+                        <label class="btn btn-outline-secondary"
+                               for="btn-mixed-{{ issue.pk }}"
+                               hx-trigger="click"
+                               hx-post="{% url 'edit-candidate-issue' candidate.pk %}"
+                               hx-vals='{ "issue": "{{ issue.pk }}", "value": "0.0" }'
+                               hx-target="#none">Mixed</label>
+                        <input type="radio"
+                               name="issue-radio-{{ issue.pk }}"
+                               class="btn-check"
+                               id="btn-supports-{{ issue.pk }}"
+                               autocomplete="off">
+                        <label class="btn btn-outline-success"
+                               for="btn-supports-{{ issue.pk }}"
+                               hx-trigger="click"
+                               hx-post="{% url 'edit-candidate-issue' candidate.pk %}"
+                               hx-vals='{ "issue": "{{ issue.pk }}", "value": "1.0" }'
+                               hx-target="#none">Supports</label>
+                    </div>
+                {% endfor %}
+            </form>
+            <a class="btn btn-success" href="{% url 'candidate' candidate.pk %}">Submit</a>
+            <div id="none"></div>
+        </div>
+    </div>
+{% endblock content %}
