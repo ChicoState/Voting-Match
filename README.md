@@ -17,3 +17,10 @@ To apply database migrations (required when changing anything in VotingMatch/cor
 sudo docker compose run web python VotingMatch/manage.py makemigrations
 sudo docker compose run web python VotingMatch/manage.py migrate
 ```
+
+## Testing the project
+To test the project models:
+
+```Shell
+docker compose run web python VotingMatch/manage.py test VotingMatch/core
+```
