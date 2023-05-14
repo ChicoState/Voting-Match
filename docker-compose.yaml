@@ -13,6 +13,8 @@ services:
     command: python VotingMatch/manage.py runserver 0.0.0.0:8000
     depends_on:
       - cloudsqlproxy
+      - htmllinter
+      - pylinter
   cloudsqlproxy:
     container_name: cloudsql-proxy
     image: gcr.io/cloudsql-docker/gce-proxy:1.19.1
@@ -22,3 +24,15 @@ services:
       - 127.0.0.1:5432:5432
     command: /cloud_sql_proxy -instances="voting-match-381201:us-west1:votingmatch"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/creds.json
     restart: always
+  pylinter:
+    build: .
+    container_name: py-linter
+    volumes:
+      - .:/app
+    command: black .
+  htmllinter:
+    build: .
+    container_name: djlint
+    volumes:
+      - .:/app
+    command: djlint . --ignore "H006,H030,H031"

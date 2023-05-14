@@ -1,0 +1,25 @@
+---
+name: Lint Code Base
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: setup python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: install
+        run: pip install djlint black
+        
+      - name: run djlint
+        run: djlint . --lint --ignore "H006,H030,H031"
+      
+      - name: run black
+        run: black .

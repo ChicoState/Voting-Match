@@ -1,17 +1,15 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block content %}
-
-<div class="row justify-content-center">
-	<div class="col-10 border-left border-right">
-		<div class="col-6 offset-3">
-			<input type="text" class="form-control" name="candidate-search" placeholder="Search candidates..."/>
-		</div>
-		<div class="row justify-content-center">
-			{% include 'content/cards/candidate_card.html' %}
-		</div>
-	</div>
-</div>
-<br>
-
-{% endblock %}
+    <div class="row justify-content-center">
+        <div class="col-10 border-left border-right">
+            <div class="col-6 offset-3">
+                <input type="text"
+                       class="form-control"
+                       name="candidate-search"
+                       placeholder="Search candidates..." />
+            </div>
+            <div class="row justify-content-center">{% include "content/cards/candidate_card.html" %}</div>
+        </div>
+    </div>
+    <br>
+{% endblock content %}

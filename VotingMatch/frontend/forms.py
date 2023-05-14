@@ -1,4 +1,4 @@
-# Documentation about Django forms: 
+# Documentation about Django forms:
 # https://docs.djangoproject.com/en/4.1/topics/forms/
 #
 # Form fields:
@@ -8,12 +8,14 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from core.models import Voter, VoterOpinion
 
+
 class RegisterForm(UserCreationForm):
     class Meta:
         model = Voter
-        fields = ['username', 'password1', 'password2']
+        fields = ["username", "password1", "password2"]
+
 
 class IssueForm(forms.ModelForm):
     class Meta:
         model = VoterOpinion
-        fields = ['position']
+        fields = ["position"]
