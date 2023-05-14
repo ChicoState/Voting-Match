@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block content %}
-<div class="align-center col-8 offset-2">
     <head>
         <link rel="stylesheet" href="styles.css">
       </head>
-    <form method="POST" action="{% url 'register' %}" autocomplete='off'>
+    <form method="post" action="{% url 'register' %}" autocomplete='off'>
         {% csrf_token %}
         
-        <div class ="row">
+        <div class="row">
             <div class="col-md-6 mx-auto p-0">
                 <div class="card">
         <div class="login-box">
@@ -44,4 +43,6 @@
         </div>
         </form>
 </div>
+</div>
+
 {% endblock content %}

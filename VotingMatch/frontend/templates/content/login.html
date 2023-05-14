@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block content %}
-<div class ="row">
+<div class="row">
     <head>
         <link rel="stylesheet" href="styles.css">
       </head>
 	<div class="col-md-6 mx-auto p-0">
 				<div class="card">
-	<form method="POST" action="{% url 'login' %}" autocomplete="off">
+	<form method="post" action="{% url 'login' %}" autocomplete="off">
 		{% csrf_token %}
 		<div class="login-box">
 			<div class="login-snip">
@@ -37,6 +37,7 @@
 			</div>
 		</div>
 	</form>
+</div>
 </div>
 </div>
 {% endblock content %}
