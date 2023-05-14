@@ -1,19 +1,43 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block content %}
-    <div class="align-center col-8 offset-2">
-        <p class="lead mb-3 ml-0">Login</p>
-        <hr />
-        <form method="post" action="{% url 'login' %}" autocomplete="off">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="form-group mb-3">
-                    <label>{{ field.label_tag }}</label>
-                    {{ field.errors }}
-                    {% render_field field class="form-control" placeholder=field.name %}
-                </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success mt-2">Login</button>
-        </form>
-    </div>
+<div class="row">
+    <head>
+        <link rel="stylesheet" href="styles.css">
+      </head>
+	<div class="col-md-6 mx-auto p-0">
+				<div class="card">
+	<form method="post" action="{% url 'login' %}" autocomplete="off">
+		{% csrf_token %}
+		<div class="login-box">
+			<div class="login-snip">
+				<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label class="tab">Login</label>
+				<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+				<div class="login-space">
+					<div class="login">
+						<div class="group">
+							<label for="user" class="label">Username</label>
+							{{ form.username.errors }}
+							{% render_field form.username class="form-control" placeholder="Enter your username" id="user" type="text" %}
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Password</label>
+							{{ form.password.errors }}
+							{% render_field form.password class="form-control" placeholder="Enter your password" id="pass" type="password" %}
+						</div>
+						<div class="group">
+							<input id="check" type="checkbox" class="check" checked>
+							<label for="check"><span class="icon"></span> Keep me Signed in</label>
+						</div>
+						<div class="group">
+							<input type="submit" class="button" value="Sign In">
+						</div>
+					</div>
+				</div>   
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+</div>
 {% endblock content %}
