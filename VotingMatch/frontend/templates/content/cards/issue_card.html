@@ -4,14 +4,14 @@
         <a href="#">
             <div class="issue-card">
                 <img class="issue-card-image"
-                     src="{% static 'images/issue-images/'|add:issue.image_name %}"
+                     src="{% static 'images/placeholder.png' %}"
                      alt="Placeholder">
             </img>
             <div class="card-container">
                 <h4>
                     <b>{{ issue }}</b>
                 </h4>
-                <p>{{ issue.issue_description }}</p>
+                <p>{% lorem 5 w %}</p>
             </div>
         </div>
     </a>
