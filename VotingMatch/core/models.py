@@ -102,8 +102,6 @@ class Candidate(models.Model):
 
 class Issue(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    image_name = models.CharField(max_length=50, default='')
-    issue_description = models.CharField(max_length=50, default='')
     candidate_opinion = models.ManyToManyField(
         Candidate, through="CandidateOpinion", related_name="issues"
     )
