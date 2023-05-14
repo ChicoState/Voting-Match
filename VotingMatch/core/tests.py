@@ -45,71 +45,37 @@ class OpinionOrderTestCase(TestCase):
                 )
                 cand_score.save()
 
-    def test_single_candidate(self):
+    def test_candidate_score(self):
         candidate1 = Candidate.objects.create(
             first_name="Bob", last_name="Test", state="CA", party="D"
         )
-        issue = Issue.objects.create(name="Unit Testing")
-        CandidateOpinion.objects.create(candidate=candidate1, issue=issue, position=1.0)
+        issue1 = Issue.objects.create(name="Unit Testing 1")
+        issue2 = Issue.objects.create(name="Unit Testing 2")
+        issue3 = Issue.objects.create(name="Unit Testing 3")
+        co1 = CandidateOpinion.objects.create(
+            candidate=candidate1, issue=issue1, position=1.0
+        )
+        co2 = CandidateOpinion.objects.create(
+            candidate=candidate1, issue=issue2, position=1.0
+        )
+        co3 = CandidateOpinion.objects.create(
+            candidate=candidate1, issue=issue3, position=-1.0
+        )
         VoterOpinion.objects.create(
-            voter=self.voter, issue=issue, position=1.0, weight=1.0
+            voter=self.voter, issue=issue1, position=1.0, weight=0.5
+        )
+        VoterOpinion.objects.create(
+            voter=self.voter, issue=issue2, position=1.0, weight=1.0
+        )
+        VoterOpinion.objects.create(
+            voter=self.voter, issue=issue3, position=1.0, weight=0.0
         )
 
         self.calculate_scores()
         qs = CandidateOpinion.objects.get_voter_order(self.voter)
-        self.assertEqual(len(qs), 1)
 
-    def test_two_candidates(self):
-        candidate1 = Candidate.objects.create(
-            first_name="Bob", last_name="Test", state="CA", party="D"
-        )
-        candidate2 = Candidate.objects.create(
-            first_name="Bill", last_name="Test", state="TX", party="R"
-        )
-        issue = Issue.objects.create(name="Unit Testing")
-        VoterOpinion.objects.create(
-            voter=self.voter, issue=issue, position=1.0, weight=1.0
-        )
-        CandidateOpinion.objects.create(candidate=candidate1, issue=issue, position=1.0)
-        CandidateOpinion.objects.create(
-            candidate=candidate2, issue=issue, position=-1.0
-        )
-
-        self.calculate_scores()
-        qs = CandidateOpinion.objects.get_voter_order(self.voter)
-        self.assertEqual(len(qs), 2)
-
-        # Ensure ordering is correct
-        candidates = list(qs)
-        self.assertEqual(candidates[0], candidate1)
-        self.assertEqual(candidates[1], candidate2)
-
-    def test_three_candidates(self):
-        candidate1 = Candidate.objects.create(
-            first_name="Bob", last_name="Test", state="CA", party="D"
-        )
-        candidate2 = Candidate.objects.create(
-            first_name="Bill", last_name="Test", state="TX", party="R"
-        )
-        candidate3 = Candidate.objects.create(
-            first_name="Bert", last_name="Test", state="WA", party="I"
-        )
-        issue = Issue.objects.create(name="Unit Testing")
-        VoterOpinion.objects.create(
-            voter=self.voter, issue=issue, position=1.0, weight=1.0
-        )
-        CandidateOpinion.objects.create(candidate=candidate1, issue=issue, position=1.0)
-        CandidateOpinion.objects.create(
-            candidate=candidate2, issue=issue, position=-1.0
-        )
-        CandidateOpinion.objects.create(candidate=candidate3, issue=issue, position=0.0)
-
-        self.calculate_scores()
-        qs = CandidateOpinion.objects.get_voter_order(self.voter)
-        self.assertEqual(len(qs), 3)
-
-        # Ensure ordering is correct
-        candidates = list(qs)
-        self.assertEqual(candidates[0], candidate1)
-        self.assertEqual(candidates[1], candidate3)
-        self.assertEqual(candidates[2], candidate2)
+        # Make sure the candidate opinions are in the same order as
+        # the voter put them
+        self.assertEqual(qs[candidate1][0], co2)
+        self.assertEqual(qs[candidate1][1], co1)
+        self.assertEqual(qs[candidate1][2], co3)
